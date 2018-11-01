@@ -39,8 +39,8 @@ Currently no installation information are available.
 [![GPLv3](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 Alex code :copyright: 2018 Maxine Michalski
-Alex art :copyright: 2017 [Ulvra](https://furaffinity.net/user/ulvra)
 
+Alex art :copyright: 2017 [Ulvra](https://furaffinity.net/user/ulvra)
 
 ## Contributing
 
