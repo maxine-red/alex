@@ -2,8 +2,6 @@
 
 ![Alex](https://mootech.eu/images/alex.png)
 
-Alex art :copyright: [Ulvra](https://furaffinity.net/user/ulvra)
-
 [![Build Status](https://travis-ci.org/maxine-red/alex.svg?branch=master)](https://travis-ci.org/maxine-red/alex)
 
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/maxine-red/alex.svg)
@@ -40,7 +38,9 @@ Currently no installation information are available.
 
 [![GPLv3](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-Copyright 2018 :copyright: Maxine Michalski
+Alex code :copyright: 2018 Maxine Michalski
+Alex art :copyright: 2017 [Ulvra](https://furaffinity.net/user/ulvra)
+
 
 ## Contributing
 
