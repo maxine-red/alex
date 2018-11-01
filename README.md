@@ -2,6 +2,8 @@
 
 ![Alex](https://mootech.eu/images/alex.png)
 
+Alex art :copyright: [Ulvra](https://furaffinity.net/user/ulvra)
+
 [![Build Status](https://travis-ci.org/maxine-red/alex.svg?branch=master)](https://travis-ci.org/maxine-red/alex)
 
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/maxine-red/alex.svg)
