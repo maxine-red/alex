@@ -1,0 +1,30 @@
+{
+  "name": "alex",
+  "version": "0.2.0",
+  "description": "Behavior based preference learning algorithm, based on pre-tagged images.",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "www-data@venus.furfind.net:/srv/git/alex.git"
+  },
+  "keywords": [
+    "machine_learning",
+    "preference_learning",
+    "ai",
+    "web-server",
+    "RESTful"
+  ],
+  "author": "Maxine Michalski",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^0.1.18",
+    "express": "^4.16.4",
+    "pg": "^7.5.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
