@@ -8,7 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "www-data@venus.furfind.net:/srv/git/alex.git"
+    "url": "https://github.com/maxine-red/alex.git"
+  },
+  "config": {
+    "port": 3000
   },
   "keywords": [
     "machine_learning",

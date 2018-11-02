@@ -20,10 +20,18 @@
 const express = require('express')
 let app = express();
 
+let api_name = process.env.npm_package_name;
+let api_version = process.env.npm_package_version;
+let port = process.env.npm_package_config_port;
+
 app.get('/', function (req, res) {
   res.send({greetings:'Hello from Alex!'});
 });
 
-module.exports = app.listen(3003, function () {
-  console.log('Example app listening on port 3003');
+app.get('/api', function (req, res) {
+  res.send({version: api_version, name: api_name});
+});
+
+module.exports = app.listen(port, function () {
+  console.log('Example app listening on port ' + port);
 });
