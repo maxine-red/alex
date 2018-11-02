@@ -17,3 +17,13 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+const express = require('express')
+let app = express();
+
+app.get('/', function (req, res) {
+  res.send({greetings:'Hello from Alex!'});
+});
+
+module.exports = app.listen(3003, function () {
+  console.log('Example app listening on port 3003');
+});
