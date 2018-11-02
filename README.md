@@ -25,6 +25,10 @@ Alex is meant as a middle ware, between them and a service provider
 Requests will be made to Alex, who then connects to the service provider and
 adds additional fields (scoring) to it.
 
+## Versioning
+
+Alex is versioned following Semver 2.0.0
+
 ## Installation
 
 Currently no installation information are available.
