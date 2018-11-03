@@ -17,24 +17,31 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const express = require('express')
-const bodyParser = require('body-parser');
+const Controller = require('./controller');
+const User = require('../models/user');
+const uuid = require('uuid/v4');
 
-let app = express();
+class Users extends Controller {
+  constructor() {
+    super();
+    this.user = new User();
+  }
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+  create(name, res) {
+    if (typeof(name) === 'string' && name !== '') {
+      let key = uuid(); // generate a random token for this API
+      this.user.create(name, key).then(function (resp) {
+          res.json(resp.rows[0]);
+      }, function (err) {
+          res.status(403);
+          res.json({error: {code: 403, message: 'Name already taken'}});
+      });
+    }
+    else {
+      res.status(400);
+      res.json({error: {code: 400, message: 'Malformed request'}});
+    }
+  }
+}
 
-let api_name = process.env.npm_package_name;
-let api_version = process.env.npm_package_version;
-let port = process.env.npm_package_config_port;
-
-app.get('/', function (req, res) {
-  res.json({greetings:'Hello from Alex!'});
-});
-
-let users = require('./routes/users');
-
-app.use('/users', users);
-
-module.exports = app.listen(port);
+module.exports = Users;

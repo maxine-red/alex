@@ -17,24 +17,8 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const express = require('express')
-const bodyParser = require('body-parser');
+class Controller {
 
-let app = express();
+}
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-let api_name = process.env.npm_package_name;
-let api_version = process.env.npm_package_version;
-let port = process.env.npm_package_config_port;
-
-app.get('/', function (req, res) {
-  res.json({greetings:'Hello from Alex!'});
-});
-
-let users = require('./routes/users');
-
-app.use('/users', users);
-
-module.exports = app.listen(port);
+module.exports = Controller;

@@ -17,24 +17,15 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const express = require('express')
-const bodyParser = require('body-parser');
+const Model = require('./model');
 
-let app = express();
+class User extends Model {
+  constructor() {
+    super();
+  }
+  create(name, key, active = false, admin = false) {
+    return this.pool.query('INSERT INTO users (name, key, active, admin) VALUES ($1, $2, $3, $4) RETURNING name, key, active;', [name, key, active, admin]);
+  }
+}
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-let api_name = process.env.npm_package_name;
-let api_version = process.env.npm_package_version;
-let port = process.env.npm_package_config_port;
-
-app.get('/', function (req, res) {
-  res.json({greetings:'Hello from Alex!'});
-});
-
-let users = require('./routes/users');
-
-app.use('/users', users);
-
-module.exports = app.listen(port);
+module.exports = User;
