@@ -17,7 +17,7 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const express = require('express')
+const express = require('express');
 const bodyParser = require('body-parser');
 
 let app = express();
@@ -25,8 +25,6 @@ let app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-let api_name = process.env.npm_package_name;
-let api_version = process.env.npm_package_version;
 let port = process.env.npm_package_config_port;
 
 app.get('/', function (req, res) {

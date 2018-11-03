@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "export NODE_ENV=test ; npm run migrate down ; npm run migrate up ; mocha",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "chai": "^4.2.0",
     "chai-fetch": "^0.3.1",
     "chai-http": "^4.2.0",
+    "eslint": "^5.8.0",
     "mocha": "^5.2.0",
     "mockttp": "^0.10.1"
   }
