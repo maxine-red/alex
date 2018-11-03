@@ -1,0 +1,11 @@
+plugins:
+  eslint:
+    enabled: true
+  git-legal:
+    enabled: true
+  fixme:
+    enabled: true
+  markdownlint:
+    enabled: true
+  nodesecurity:
+    enabled: true
