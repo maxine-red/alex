@@ -31,10 +31,10 @@ class Users extends Controller {
     if (typeof(name) === 'string' && name !== '') {
       let key = uuid(); // generate a random token for this API
       this.user.create(name, key).then(function (resp) {
-          res.json(resp.rows[0]);
-      }, function (err) {
-          res.status(403);
-          res.json({error: {code: 403, message: 'Name already taken'}});
+        res.json(resp.rows[0]);
+      }, function () {
+        res.status(403);
+        res.json({error: {code: 403, message: 'Name already taken'}});
       });
     }
     else {

@@ -17,7 +17,7 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const { Pool, Client } = require('pg');
+const { Pool } = require('pg');
 const conf = require('config');
 
 class Model {
