@@ -31,9 +31,9 @@ describe('API', function () {
       it('throws an error if name is already taken', function (done) {
         chai.request(server).post('/users').send({ name: 'test-name'})
           .then(function (res) {
-            expect(res).to.have.status(403);
+            expect(res).to.have.status(422);
             expect(res).to.be.json;
-            expect(res.body.error.code).to.be.equal(403);
+            expect(res.body.error.code).to.be.equal(422);
             expect(res.body.error.message).to.be.a('string');
             expect(res.body.error.message).to.be.equal('Name already taken');
           }, function (err) { throw err; }).then(done, done);

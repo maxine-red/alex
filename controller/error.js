@@ -17,34 +17,16 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const Controller = require('./controller');
-const Error = require('./error');
-const User = require('../models/user');
-const uuid = require('uuid/v4');
-
-class Users extends Controller {
-  constructor() {
-    super();
-    this.user = new User();
-  }
-
-  create(name, res) {
-    if (typeof(name) === 'string' && name !== '') {
-      let key = uuid(); // generate a random token for this API
-      this.user.create(name, key).then(function (resp) {
-        res.json(resp.rows[0]);
-      }, function () {
-        let err = new Error(422);
-        res.status(err.code);
-        res.json({error: err});
-      });
-    }
-    else {
-      let err = new Error(400);
-      res.status(err.code);
-      res.json({error: err});
+class Error {
+  constructor(code) {
+    this.code = code;
+    switch (code) {
+      case 400: this.message = 'Malformed request'; break;
+      case 403: this.message = 'Permission denied'; break;
+      case 422: this.message = 'Name already taken'; break;
+      default: this.message = 'An unknown error occured'; break;
     }
   }
 }
 
-module.exports = Users;
+module.exports = Error;
