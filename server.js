@@ -37,4 +37,18 @@ let users = require('./routes/users');
 
 app.use('/users', users);
 
+// Handle 404 responses properly.
+const ErrorController = require('./controllers/error');
+app.use(function (req, res) {
+  let err = new ErrorController(404);
+  res.status(err.code).json({error: err});
+});
+
+// Error handling
+app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(err.stack); // eslint-disable-line no-console
+  }
+  res.status(500).json({error: new Error(500)});
+});
 module.exports = app.listen(port);

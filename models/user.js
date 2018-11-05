@@ -19,12 +19,50 @@
 
 const Model = require('./model');
 
+/**
+ * User model class
+ * @class
+ * @author Maxine Michalski
+ * @since 1.0.0
+ */
 class User extends Model {
+
+  /**
+   * Contructor for user models.
+   * @function
+   */
   constructor() {
     super();
   }
+
+  /**
+   * Create a new user in database
+   * @function
+   * @param {string} name - Name of new user
+   * @param {boolean} [active=false] - Activation state of user
+   * @returns {Promise} Query result
+   */
   create(name, active = false) {
     return this.pool.query('INSERT INTO users (name, active) VALUES ($1, $2) RETURNING name, active;', [name, active]);
+  }
+ 
+  /**
+   * Query a list of users
+   * @function
+   * @returns {Promise} Query result
+   */
+  list() {
+    return this.pool.query('SELECT id, name, active, EXTRACT(EPOCH FROM created_at) AS created_at, EXTRACT(EPOCH FROM updated_at) AS updated_at FROM users ORDER BY id;');
+  }
+  
+  /**
+   * Find a specific user in database, by id
+   * @function
+   * @param {int} id - ID of user to be fetched
+   * @returns {Promise} Query result
+   */
+  find(id) {
+    return this.pool.query('SELECT id, name, active, EXTRACT(EPOCH FROM created_at) AS created_at, EXTRACT(EPOCH FROM updated_at) AS updated_at FROM users WHERE id = $1;', [id]);
   }
 }
 

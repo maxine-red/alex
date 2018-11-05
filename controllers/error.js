@@ -18,33 +18,38 @@
  */
 
 const Controller = require('./controller');
-const Error = require('./error');
-const User = require('../models/user');
 
-class Users extends Controller {
-  constructor() {
+/**
+ * Main class for controller error handling.
+ * @author Maxine Michalski
+ * @since 1.0.0
+ * @private
+ * @class
+ */
+class ErrorController extends Controller{
+  /**
+   * Error handling constructor.
+   * @param {int} code - Code to be used for error message
+   */
+  constructor(code) {
     super();
-    this.user = new User();
-  }
-
-  error(code) {
-    return new Promise(function (res, reject) {
-      reject({ error: new Error(code) });
-    });
-  }
-
-  create(name, active = false) {
-    if (typeof(name) === 'string' && name !== '') {
-      return this.user.create(name, active).then(function (res) {
-        return res.rows[0];
-      }, function () {
-        throw { error: new Error(422) };
-      });
-    }
-    else {
-      return this.error(400);
+    /**
+     * @private
+     * @member {int} code
+     */
+    this.code = code;
+    /**
+     * @private
+     * @member {string} name
+     */
+    switch (code) {
+    case 400: this.message = 'Malformed request'; break;
+    case 403: this.message = 'Permission denied'; break;
+    case 404: this.message = 'Not Found'; break;
+    case 422: this.message = 'Name already taken'; break;
+    default: this.message = 'An unknown error occured'; break;
     }
   }
 }
 
-module.exports = Users;
+module.exports = ErrorController;

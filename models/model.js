@@ -20,8 +20,24 @@
 const { Pool } = require('pg');
 const conf = require('config');
 
+/**
+ * Base class for all models
+ * @class
+ * @author Maxine Michalski
+ * @since 1.0.0
+ */
 class Model {
+
+  /**
+   * Constructor for Models
+   * @function
+   * @private
+   */
   constructor () {
+    /**
+     * @private
+     * @member {Pool} pool
+     */
     this.pool = new Pool(conf.db);
   }
 }

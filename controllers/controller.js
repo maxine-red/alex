@@ -17,16 +17,12 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Error {
-  constructor(code) {
-    this.code = code;
-    switch (code) {
-    case 400: this.message = 'Malformed request'; break;
-    case 403: this.message = 'Permission denied'; break;
-    case 422: this.message = 'Name already taken'; break;
-    default: this.message = 'An unknown error occured'; break;
-    }
-  }
+/**
+ * Base class for controllers.
+ * @class
+ */
+class Controller {
+
 }
 
-module.exports = Error;
+module.exports = Controller;

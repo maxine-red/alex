@@ -18,24 +18,46 @@
  */
 
 const express = require('express');
-const Users = require('../controller/user');
+const Users = require('../controllers/users');
 let users = new Users();
 let router = express.Router();
+const ErrorController = require('../controllers/error');
 
-router.post('/', function (req, res) {
-  let response;
-  if (req.body.password === process.env.PASSWORD) {
-    response = users.create(req.body.name, req.body.active === true);
+router.use(function (req, res, next) {
+  if (req.get('X-AL3X-Password') === process.env.PASSWORD) {
+    next();
   }
   else {
-    response = users.error(403);
+    let err = new ErrorController(403);
+    res.status(err.code).json({error: err});
   }
-  response.then(function (resp) {
-    res.json(resp);
-  }, function (err) {
-    res.status(err.error.code);
-    res.json(err);
-  });
+});
+
+router.post('/', function (req, res) {
+  users.create(req.body.name, req.body.active === true)
+    .then(function (resp) {
+      res.json(resp);
+    }, function (err) {
+      res.status(err.error.code).json(err);
+    });
+});
+
+router.get('/', function (req, res) {
+  users.index()
+    .then(function (resp) {
+      res.json(resp);
+    }, function (err) {
+      res.status(err.error.code).json(err);
+    });
+});
+
+router.get('/:id', function (req, res) {
+  users.show(req.params.id)
+    .then(function (resp) {
+      res.json(resp);
+    }, function (err) {
+      res.status(err.error.code).json(err);
+    });
 });
 
 module.exports = router;
