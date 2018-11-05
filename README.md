@@ -33,6 +33,10 @@ adds additional fields (scoring) to it.
 
 Alex is versioned following Semver 2.0.0
 
+## Documentation
+
+Documentation can be found under [Documentation.md](Documentation.md).
+
 ## Installation
 
 Currently no installation information are available.
