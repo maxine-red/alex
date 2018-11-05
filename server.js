@@ -19,11 +19,17 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const morgan = require('morgan');
 
 let app = express();
 
+let access_log = fs.createWriteStream('logs/access.log', { flags: 'a' });
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(morgan('combined', { stream: access_log }));
 
 let port = process.env.npm_package_config_port;
 
