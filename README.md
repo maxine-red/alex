@@ -35,7 +35,7 @@ Alex is versioned following Semver 2.0.0
 
 ## Documentation
 
-Documentation can be found under [Documentation.md](Documentation.md).
+Documentation can be found under [documentation](DOCUMENTATION.md).
 
 ## Installation
 
