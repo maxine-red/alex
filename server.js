@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 
 app.use(morgan('combined', { stream: access_log }));
 
-let port = process.env.npm_package_config_port || 3000;
+let port = process.env.PORT || 3000;
 
 let users = require('./routes/users');
 
