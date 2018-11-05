@@ -13,6 +13,20 @@
             "error",
             2
         ],
+        "valid-jsdoc": [
+          "error"
+        ],
+        "require-jsdoc": [
+          "error", {
+            "require": {
+              "FunctionDeclaration": true,
+              "MethodDefinition": true,
+              "ClassDeclaration": true,
+              "ArrowFunctionExpression": false,
+              "FunctionExpression": false
+            }
+          }
+        ],
         "linebreak-style": [
             "error",
             "unix"
