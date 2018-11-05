@@ -23,7 +23,19 @@ let users = new Users();
 let router = express.Router();
 
 router.post('/', function (req, res) {
-  users.create(req.body.name, res);
+  let response;
+  if (req.body.password === process.env.PASSWORD) {
+    response = users.create(req.body.name, req.body.active === true);
+  }
+  else {
+    response = users.error(403);
+  }
+  response.then(function (resp) {
+    res.json(resp);
+  }, function (err) {
+    res.status(err.error.code);
+    res.json(err);
+  });
 });
 
 module.exports = router;

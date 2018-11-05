@@ -23,8 +23,8 @@ class User extends Model {
   constructor() {
     super();
   }
-  create(name, key, active = false, admin = false) {
-    return this.pool.query('INSERT INTO users (name, key, active, admin) VALUES ($1, $2, $3, $4) RETURNING name, key, active;', [name, key, active, admin]);
+  create(name, active = false) {
+    return this.pool.query('INSERT INTO users (name, active) VALUES ($1, $2) RETURNING name, active;', [name, active]);
   }
 }
 

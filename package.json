@@ -4,7 +4,7 @@
   "description": "Behavior based preference learning algorithm, based on pre-tagged images.",
   "main": "server.js",
   "scripts": {
-    "test": "export NODE_ENV=test ; npm run migrate down ; npm run migrate up ; nyc --reporter=lcov mocha",
+    "test": "export NODE_ENV=test ; npm run migrate down ; npm run migrate up ; PASSWORD=hasckme123 nyc --reporter=lcov mocha",
     "migrate": "node-pg-migrate",
     "lint": "eslint ."
   },

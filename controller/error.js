@@ -21,10 +21,10 @@ class Error {
   constructor(code) {
     this.code = code;
     switch (code) {
-      case 400: this.message = 'Malformed request'; break;
-      case 403: this.message = 'Permission denied'; break;
-      case 422: this.message = 'Name already taken'; break;
-      default: this.message = 'An unknown error occured'; break;
+    case 400: this.message = 'Malformed request'; break;
+    case 403: this.message = 'Permission denied'; break;
+    case 422: this.message = 'Name already taken'; break;
+    default: this.message = 'An unknown error occured'; break;
     }
   }
 }

@@ -20,7 +20,6 @@
 const Controller = require('./controller');
 const Error = require('./error');
 const User = require('../models/user');
-const uuid = require('uuid/v4');
 
 class Users extends Controller {
   constructor() {
@@ -28,21 +27,22 @@ class Users extends Controller {
     this.user = new User();
   }
 
-  create(name, res) {
+  error(code) {
+    return new Promise(function (res, reject) {
+      reject({ error: new Error(code) });
+    });
+  }
+
+  create(name, active = false) {
     if (typeof(name) === 'string' && name !== '') {
-      let key = uuid(); // generate a random token for this API
-      this.user.create(name, key).then(function (resp) {
-        res.json(resp.rows[0]);
+      return this.user.create(name, active).then(function (res) {
+        return res.rows[0];
       }, function () {
-        let err = new Error(422);
-        res.status(err.code);
-        res.json({error: err});
+        throw { error: new Error(422) };
       });
     }
     else {
-      let err = new Error(400);
-      res.status(err.code);
-      res.json({error: err});
+      return this.error(400);
     }
   }
 }
