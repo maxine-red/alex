@@ -18,22 +18,12 @@
  */
 
 const express = require('express');
-const Users = require('../controllers/users');
-let users = new Users();
+/*const Users = require('../controllers/users');
+let users = new Users();*/
 let router = express.Router();
-const ErrorController = require('../controllers/error');
+/*const ErrorController = require('../controllers/error');
 
-router.use(function (req, res, next) {
-  if (req.get('X-AL3X-Password') === process.env.PASSWORD) {
-    next();
-  }
-  else {
-    let err = new ErrorController(403);
-    res.status(err.code).json({error: err});
-  }
-});
-
-router.post('/', function (req, res) {
+router.post('/:name', function (req, res) {
   users.create(req.body.name, req.body.active === true)
     .then(function (resp) {
       res.json(resp);
@@ -42,22 +32,13 @@ router.post('/', function (req, res) {
     });
 });
 
-router.get('/', function (req, res) {
+router.get('/:name', function (req, res) {
   users.index()
     .then(function (resp) {
       res.json(resp);
     }, function (err) {
       res.status(err.error.code).json(err);
     });
-});
-
-router.get('/:id', function (req, res) {
-  users.show(req.params.id)
-    .then(function (resp) {
-      res.json(resp);
-    }, function (err) {
-      res.status(err.error.code).json(err);
-    });
-});
+});*/
 
 module.exports = router;

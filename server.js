@@ -33,9 +33,9 @@ app.use(morgan('combined', { stream: access_log }));
 
 let port = process.env.PORT || 3000;
 
-let users = require('./routes/users');
+//let users = require('./routes/users');
 
-app.use('/users', users);
+//app.use('/users', users);
 
 // Handle 404 responses properly.
 const ErrorController = require('./controllers/error');

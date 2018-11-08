@@ -4,8 +4,7 @@
   "description": "Behavior based preference learning algorithm, based on pre-tagged images.",
   "main": "server.js",
   "scripts": {
-    "test": "export NODE_ENV=test ; nyc --reporter=lcov mocha",
-    "migrate": "node-pg-migrate",
+    "test": "NODE_ENV=test nyc --reporter=lcov mocha",
     "lint": "eslint .",
     "document": "documentation build server.js -f md > DOCUMENTATION.md"
   },
@@ -16,9 +15,7 @@
   "keywords": [
     "machine_learning",
     "preference_learning",
-    "ai",
-    "web-server",
-    "RESTful"
+    "ai"
   ],
   "author": "Maxine Michalski",
   "license": "GPL-3.0-or-later",

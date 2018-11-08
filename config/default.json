@@ -1,8 +1,0 @@
-{
-  "db": {
-    "host": "/var/run/postgresql",
-    "port": 5432,
-    "database": "alex_development",
-    "max": 10
-  }
-}
