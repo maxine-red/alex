@@ -4,7 +4,7 @@
   "description": "Behavior based preference learning algorithm, based on pre-tagged images.",
   "main": "server.js",
   "scripts": {
-    "test": "export NODE_ENV=test ; npm run migrate down ; npm run migrate up ; PASSWORD=hasckme123 nyc --reporter=lcov mocha",
+    "test": "export NODE_ENV=test ; nyc --reporter=lcov mocha",
     "migrate": "node-pg-migrate",
     "lint": "eslint .",
     "document": "documentation build server.js -f md > DOCUMENTATION.md"
@@ -25,10 +25,7 @@
   "dependencies": {
     "@tensorflow/tfjs-node": "^0.1.18",
     "express": "^4.16.4",
-    "morgan": "^1.9.1",
-    "node-pg-migrate": "^3.12.0",
-    "pg": "^7.6.0",
-    "uuid": "^3.3.2"
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -38,7 +35,6 @@
     "documentation": "^8.1.2",
     "eslint": "^5.8.0",
     "mocha": "^5.2.0",
-    "mockttp": "^0.10.1",
     "nyc": "^13.1.0"
   }
 }
