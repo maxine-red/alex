@@ -24,47 +24,47 @@ let expect = chai.expect;
 
 
 describe('Diganostics', function () {
-  describe('.start_up', function () {
-    let startup = Diagnostics.start_up();
-    it('returns an object', function (done) {
-      expect(startup).to.be.an('object');
+  describe('new', function () {
+    let diagnostics = new Diagnostics();
+    it('returns a Diagnostics object', function (done) {
+      expect(diagnostics).to.be.an('object');
       done();
     });
-    describe('return object', function () {
+    describe('with properties', function () {
       it('has an `arch` attribute', function (done) {
-        expect(startup).to.have.property('arch').and.be.a('string');
+        expect(diagnostics).to.have.property('arch').and.be.a('string');
         done();
       });
       it('has an `interpreter` attribute', function (done) {
-        expect(startup).to.have.property('interpreter').and.be.a('string');
+        expect(diagnostics).to.have.property('interpreter').and.be.a('string');
         done();
       });
       it('has an `program` attribute', function (done) {
-        expect(startup).to.have.property('program').and.be.a('string');
+        expect(diagnostics).to.have.property('program').and.be.a('string');
         done();
       });
       it('has an `platform` attribute', function (done) {
-        expect(startup).to.have.property('platform').and.be.a('string');
+        expect(diagnostics).to.have.property('platform').and.be.a('string');
         done();
       });
       it('has an `title` attribute', function (done) {
-        expect(startup).to.have.property('title').and.be.a('string');
+        expect(diagnostics).to.have.property('title').and.be.a('string');
         done();
       });
       it('has an `username` attribute', function (done) {
-        expect(startup).to.have.property('username').and.be.a('string');
+        expect(diagnostics).to.have.property('username').and.be.a('string');
         done();
       });
       it('has an `groupname` attribute', function (done) {
-        expect(startup).to.have.property('groupname').and.be.a('string');
+        expect(diagnostics).to.have.property('groupname').and.be.a('string');
         done();
       });
       it('has an `user_id` attribute', function (done) {
-        expect(startup).to.have.property('user_id').and.be.a('number');
+        expect(diagnostics).to.have.property('user_id').and.be.a('number');
         done();
       });
       it('has an `group_id` attribute', function (done) {
-        expect(startup).to.have.property('group_id').and.be.a('number');
+        expect(diagnostics).to.have.property('group_id').and.be.a('number');
         done();
       });
     });

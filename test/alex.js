@@ -18,28 +18,22 @@
  */
 
 let chai = require('chai');
-let chai_http = require('chai-http');
-let server = require('../lib/server');
+let Alex = require('../lib/alex');
 
 let expect = chai.expect;
 
-chai.use(chai_http);
-
-describe('API', function () {
-  describe('GET /not_here', function () {
-    it('denies with a 404', function (done) {
-      chai.request(server).get('/not_here')
-        .then(function (res) {
-          expect(res).to.have.status(404);
-          expect(res).to.be.json;
-          expect(res.body.error.code).to.be.equal(404);
-          expect(res.body.error.message).to.be.a('string');
-          expect(res.body.error.message).to.be.equal('Not Found');
-        }, handle_error).then(done, done);
+describe('Alex', function () {
+  describe('new', function () {
+    it('returns a new class instanec object', function (done) {
+      let alex = new Alex();
+      expect(alex).to.have.property('name').and.be.equal('AL3X');
+      done();
+    });
+  });
+  describe('#start', function () {
+    it('starts up everything and returns true', function (done) {
+      expect(new Alex().start()).to.be.equal(true);
+      done();
     });
   });
 });
-
-function handle_error(err) {
-  throw err;
-}
