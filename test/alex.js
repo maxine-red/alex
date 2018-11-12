@@ -27,12 +27,17 @@ describe('Alex', function () {
     it('returns a new class instanec object', function (done) {
       let alex = new Alex();
       expect(alex).to.have.property('name').and.be.equal('AL3X');
+      expect(alex).to.have.property('diagnostics').and.be.an('object')
+        .and.has.property('arch');
+      expect(alex).to.have.property('logger').and.be.an('object')
+        .and.has.property('logger');
       done();
     });
   });
   describe('#start', function () {
     it('starts up everything and returns true', function (done) {
-      expect(new Alex().start()).to.be.equal(true);
+      let alex = new Alex();
+      expect(alex.start()).to.be.equal(true);
       done();
     });
     it('aborts and returns false if the platform is windows', function (done) {

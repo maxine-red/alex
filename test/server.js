@@ -19,7 +19,10 @@
 
 let chai = require('chai');
 let chai_http = require('chai-http');
-let server = require('../lib/server');
+let Alex = require('../lib/alex');
+let alex = new Alex();
+alex.start();
+let server = alex.server();
 
 let expect = chai.expect;
 
@@ -35,11 +38,31 @@ describe('API', function () {
           expect(res.body.error.code).to.be.equal(404);
           expect(res.body.error.message).to.be.a('string');
           expect(res.body.error.message).to.be.equal('Not Found');
-        }, handle_error).then(done, done);
+        }, done).then(done, done);
+    });
+  });
+  describe('GET /500', function () {
+    it('denies with a 500', function (done) {
+      chai.request(server).get('/500')
+        .then(function (res) {
+          expect(res).to.have.status(500);
+          expect(res).to.be.json;
+          expect(res.body.error.code).to.be.equal(500);
+          expect(res.body.error.message).to.be.a('string');
+          expect(res.body.error.message).to.be.equal('Internal Server Error');
+        }, done).then(done, done);
+    });
+  });
+  describe('GET /unknown', function () {
+    it('denies with an unknown error', function (done) {
+      chai.request(server).get('/unknown')
+        .then(function (res) {
+          expect(res).to.have.status(501);
+          expect(res).to.be.json;
+          expect(res.body.error.code).to.be.equal(501);
+          expect(res.body.error.message).to.be.a('string');
+          expect(res.body.error.message).to.be.equal('An unknown error occured');
+        }, done).then(done, done);
     });
   });
 });
-
-function handle_error(err) {
-  throw err;
-}
