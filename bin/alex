@@ -25,6 +25,8 @@ const Alex = require('../lib/alex');
 
 let alex = new Alex();
 
-alex.start();
+if (!alex.start()) {
+  process.exit(1);
+}
 
 process.exit(0);

@@ -18,33 +18,35 @@
  */
 
 let chai = require('chai');
-let Alex = require('../lib/alex');
+let Logger = require('../lib/logger');
 
 let expect = chai.expect;
 
-describe('Alex', function () {
-  describe('new', function () {
-    it('returns a new class instanec object', function (done) {
-      let alex = new Alex();
-      expect(alex).to.have.property('name').and.be.equal('AL3X');
+describe('logger', function () {
+  describe('development environemnt', function () {
+    it('outputs to console', function (done) {
+      let env = process.env.NODE_ENV;
+      process.env.NODE_ENV = undefined;
+      let logger = new Logger();
+      expect(logger.info('works')).to.be.equal(undefined);
+      process.env.NODE_ENV = env;
       done();
     });
   });
-  describe('#start', function () {
-    it('starts up everything and returns true', function (done) {
-      expect(new Alex().start()).to.be.equal(true);
+  describe('production environemnt', function () {
+    it('outputs to file', function (done) {
+      let env = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'production';
+      let logger = new Logger();
+      expect(logger.error('works')).to.be.equal(undefined);
+      process.env.NODE_ENV = env;
       done();
     });
-    it('aborts and returns false if the platform is windows', function (done) {
-      let alex = new Alex();
-      alex.diagnostics.platform = 'windows';
-      expect(alex.start()).to.be.equal(false);
-      done();
-    });
-    it('aborts and returns false if user is root', function (done) {
-      let alex = new Alex();
-      alex.diagnostics.user_id = 0;
-      expect(alex.start()).to.be.equal(false);
+  });
+  describe('test environment', function () {
+    it('outputs to file', function (done) {
+      let logger = new Logger();
+      expect(logger.debug('works')).to.be.equal(undefined);
       done();
     });
   });
