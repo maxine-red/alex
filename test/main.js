@@ -19,7 +19,7 @@
 
 let chai = require('chai');
 let chai_http = require('chai-http');
-let server = require('../server');
+let server = require('../main');
 
 let expect = chai.expect;
 

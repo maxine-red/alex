@@ -2,9 +2,9 @@
   "name": "alex",
   "version": "0.2.0",
   "description": "Behavior based preference learning algorithm, based on pre-tagged images.",
-  "main": "server.js",
+  "main": "main.js",
   "scripts": {
-    "test": "NODE_ENV=test nyc --reporter=lcov mocha",
+    "test": "NODE_ENV=test nyc --reporter=text-summary --reporter=lcov mocha",
     "lint": "eslint .",
     "document": "documentation build server.js -f md > DOCUMENTATION.md"
   },
@@ -22,7 +22,8 @@
   "dependencies": {
     "@tensorflow/tfjs-node": "^0.1.18",
     "express": "^4.16.4",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
