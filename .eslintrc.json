@@ -10,14 +10,14 @@
     },
     "rules": {
         "indent": [
-            "error",
+            "warn",
             2
         ],
         "valid-jsdoc": [
-          "error"
+          "warn"
         ],
         "require-jsdoc": [
-          "error", {
+          "warn", {
             "require": {
               "FunctionDeclaration": true,
               "MethodDefinition": true,
