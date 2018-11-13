@@ -28,5 +28,5 @@ let alex = new Alex();
 if (!alex.start()) {
   process.exit(1);
 }
-
-process.exit(0);
+alex.server();
+//process.exit(0);
