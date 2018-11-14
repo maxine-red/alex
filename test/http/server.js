@@ -19,7 +19,7 @@
 
 let chai = require('chai');
 let chai_http = require('chai-http');
-let Alex = require('../lib/alex');
+let Alex = require('../../lib/alex');
 let alex = new Alex();
 alex.start();
 let server = alex.server();

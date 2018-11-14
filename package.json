@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "./bin/alex",
-    "test": "export NODE_ENV=test; nyc --reporter=text-summary --reporter=lcov mocha",
+    "test": "export NODE_ENV=test; nyc --reporter=text-summary --reporter=lcov mocha --recursive",
     "lint": "eslint .",
     "document": "documentation build server.js -f md > DOCUMENTATION.md"
   },
