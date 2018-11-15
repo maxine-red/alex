@@ -30,4 +30,7 @@ if (!alex.start()) {
 }
 
 alex.server();
-//process.exit(0);
+
+process.on('SIGINT', function () {
+  alex.server.close();
+});
