@@ -74,3 +74,4 @@ typings/
 
 # project specific ignores
 personalities/
+tmp/

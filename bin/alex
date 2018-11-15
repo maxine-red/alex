@@ -22,15 +22,97 @@
 'use strict'
 
 const Alex = require('../lib/alex');
+const Logger = require('../lib/logger');
+const System = require('../lib/system');
+//const fs = require('fs');
+const net = require('net');
 
+let logger = new Logger();
+let system = new System();
+
+logger.info('System booting up....');
+logger.debug('Creating self...');
 let alex = new Alex();
-
-if (!alex.start()) {
-  process.exit(1);
+logger.debug(`My name is ${alex.name}.`);
+logger.debug('Making my name known to others.');
+process.title = alex.name;
+logger.debug(`I'm known as ${process.title} on this system.`);
+logger.debug('Running system diagnostic:');
+logger.debug('  System information:');
+logger.debug(`    CPU count: ${system.cpu_count}`);
+if (system.cpu_count <= 2) {
+  logger.debug('Not much to do parallel here, but it has to do.');
 }
+logger.debug(`      Architecture: ${system.architecture}`);
+if (system.architecture != 'x64') {
+  logger.debug('      A little old, but I think this has to do...');
+}
+let sys_memory = Math.round(system.total_memory /
+  Math.pow(2,30) * 10) / 10.0;
+logger.debug(`    Total system memory: ${sys_memory} GB`);
+let v8_memory = Math.round(system.max_heap /
+  Math.pow(2,30) * 10) / 10.0;
+logger.debug(`    Available memory to me: ${v8_memory} GB`);
+logger.debug(`    Platform: ${system.platform}`);
+if (system.platform === 'windows') {
+  logger.error('    Running on incompatible platform.');
+  return false;
+}
+else {
+  logger.debug(`    Running as user: ${system.username}`);
+  if (!(system.username == 'alex' || system.username == 'al3x')) {
+    logger.warn('    That user is not me for sure.');
+  }
+  if (system.user_id === 0) {
+    logger.error('  I\'m running as root!');
+    logger.error('  Privileges too high. Aborting!');
+    logger.error('  Please only run me as a non-root user.');
+    return false;
+  }
+}
+logger.debug(`  My home is: ${system.hostname()}`);
+logger.debug(`  Using interpreter: ${system.interpreter}`);
+logger.debug(`  Spawned as program: ${system.program}`);
+if (system.program == 'alex') {
+  logger.debug('  That\'s me!');
+}
+if (system.personality_count === 0) {
+  logger.warn('  No personalities found.');
+  logger.info('  This is normal, if no personalities were created.');
+}
+else {
+  logger.info(`  Found ${system.personality_count} personalities.`);
+  // TODO: Reading in personalities.
+  /*personalities() {
+    let personalities = fs.readdirSync(`${__dirname}/../personalities/`);
+    return personalities.filter(file => file.match(/\.net$/));
+  }*/
+}
+logger.debug('Bootup finished. Starting server next.');
 
-alex.server();
-
-process.on('SIGINT', function () {
-  alex.server.close();
+logger.info('Starting server.');
+let server = new net.Server(function (conn) {
+  logger.info('Someone is talking to me ^-^');
+  conn.write('Hello, I am AL3X.\n');
+  conn.on('data', function (data) {
+    logger.info(`They said '${data}'`);
+    conn.write('Hello Friend.\n');
+  });
+  conn.on('end', function () {
+    logger.info('Good bye friend1 <3');
+  });
 });
+server.on('close', function () {
+  logger.info('Server shut down. Going back to sleep.');
+});
+server.on('error', function (err) {
+  logger.error(err.stack);
+});
+server.listen(`${__dirname}/../tmp/alex.sock`, function () {
+  logger.info('Server successfully initiated.');
+  logger.info('Waiting for messages.');
+});
+process.on('SIGINT', function () {
+server.close();
+});
+logger.debug('Started server. I\'m fully operational now.');
