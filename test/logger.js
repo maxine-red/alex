@@ -28,7 +28,7 @@ describe('logger', function () {
       let env = process.env.NODE_ENV;
       process.env.NODE_ENV = undefined;
       let logger = new Logger();
-      expect(logger.warn('works')).to.be.equal(undefined);
+      expect(logger.debug('works')).to.be.equal(undefined);
       process.env.NODE_ENV = env;
       done();
     });
@@ -47,7 +47,7 @@ describe('logger', function () {
   describe('test environment', function () {
     it('outputs to file', function (done) {
       let logger = new Logger();
-      expect(logger.debug('works')).to.be.equal(undefined);
+      expect(logger.warn('works')).to.be.equal(undefined);
       done();
     });
   });

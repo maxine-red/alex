@@ -39,18 +39,18 @@ process.title = alex.name;
 logger.debug(`I'm known as ${process.title} on this system.`);
 logger.debug('Running system diagnostic:');
 logger.debug('  System information:');
-logger.debug(`    CPU count: ${system.cpu_count}`);
+logger.debug(`    CPU count: ${system.cpu.cores}`);
 if (system.cpu_count <= 2) {
   logger.debug('Not much to do parallel here, but it has to do.');
 }
-logger.debug(`      Architecture: ${system.architecture}`);
+logger.debug(`      Architecture: ${system.cpu.architecture}`);
 if (system.architecture != 'x64') {
   logger.debug('      A little old, but I think this has to do...');
 }
-let sys_memory = Math.round(system.total_memory /
+let sys_memory = Math.round(system.memory.total /
   Math.pow(2,30) * 10) / 10.0;
 logger.debug(`    Total system memory: ${sys_memory} GB`);
-let v8_memory = Math.round(system.max_heap /
+let v8_memory = Math.round(system.memory.max_heap /
   Math.pow(2,30) * 10) / 10.0;
 logger.debug(`    Available memory to me: ${v8_memory} GB`);
 logger.debug(`    Platform: ${system.platform}`);
@@ -59,21 +59,21 @@ if (system.platform === 'windows') {
   return false;
 }
 else {
-  logger.debug(`    Running as user: ${system.username}`);
-  if (!(system.username == 'alex' || system.username == 'al3x')) {
+  logger.debug(`    Running as user: ${system.user.name}`);
+  if (!(system.user.name == 'alex' || system.user.name == 'al3x')) {
     logger.warn('    That user is not me for sure.');
   }
-  if (system.user_id === 0) {
+  if (system.user.id === 0) {
     logger.error('  I\'m running as root!');
     logger.error('  Privileges too high. Aborting!');
     logger.error('  Please only run me as a non-root user.');
-    return false;
+    process.exit(1);
   }
 }
 logger.debug(`  My home is: ${system.hostname()}`);
-logger.debug(`  Using interpreter: ${system.interpreter}`);
-logger.debug(`  Spawned as program: ${system.program}`);
-if (system.program == 'alex') {
+logger.debug(`  Using interpreter: ${system.interpreter.node}`);
+logger.debug(`  Spawned as program: ${system.interpreter.program}`);
+/*if (system.program == 'alex') {
   logger.debug('  That\'s me!');
 }
 if (system.personality_count === 0) {
@@ -86,33 +86,49 @@ else {
   /*personalities() {
     let personalities = fs.readdirSync(`${__dirname}/../personalities/`);
     return personalities.filter(file => file.match(/\.net$/));
-  }*/
-}
+  }
+}*/
 logger.debug('Bootup finished. Starting server next.');
 
 logger.info('Starting server.');
+
+const greeting = `${JSON.stringify({
+  message: `${alex.name} ${alex.version}`
+})}\n`;
+
 let server = new net.Server(function (conn) {
-  logger.info('Someone is talking to me ^-^');
-  conn.write('Hello, I am AL3X.\n');
+  logger.debug('Someone is talking to me ^-^');
+  conn.write(greeting);
   conn.on('data', function (data) {
-    logger.info(`They said '${data}'`);
+    logger.debug(`They said '${data}'`);
+    try {
+      data = JSON.parse(data);
+    }
+    catch(error) {
+      logger.debug('*head titls* ???');
+      data = {message: data};
+    }
     conn.write('Hello Friend.\n');
   });
   conn.on('end', function () {
-    logger.info('Good bye friend1 <3');
+    logger.debug('Good bye friend! <3');
   });
 });
+
 server.on('close', function () {
-  logger.info('Server shut down. Going back to sleep.');
+  logger.info('Server shut down.');
+  logger.info('Going back to sleep.');
 });
+
 server.on('error', function (err) {
   logger.error(err.stack);
 });
+
 server.listen(`${__dirname}/../tmp/alex.sock`, function () {
   logger.info('Server successfully initiated.');
-  logger.info('Waiting for messages.');
+  logger.debug('Waiting for messages.');
 });
+
 process.on('SIGINT', function () {
-server.close();
+  server.close();
 });
-logger.debug('Started server. I\'m fully operational now.');
