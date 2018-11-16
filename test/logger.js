@@ -27,7 +27,7 @@ describe('logger', function () {
     it('outputs to console', function (done) {
       let env = process.env.NODE_ENV;
       process.env.NODE_ENV = undefined;
-      let logger = new Logger();
+      let logger = new Logger('');
       expect(logger.debug('works')).to.be.equal(undefined);
       process.env.NODE_ENV = env;
       done();

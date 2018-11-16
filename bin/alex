@@ -24,8 +24,8 @@
 const Alex = require('../lib/alex');
 const Logger = require('../lib/logger');
 const System = require('../lib/system');
-//const fs = require('fs');
-const net = require('net');
+
+let server = require('../lib/server');
 
 let logger = new Logger();
 let system = new System();
@@ -56,7 +56,7 @@ logger.debug(`    Available memory to me: ${v8_memory} GB`);
 logger.debug(`    Platform: ${system.platform}`);
 if (system.platform === 'windows') {
   logger.error('    Running on incompatible platform.');
-  return false;
+  process.exit(1);
 }
 else {
   logger.debug(`    Running as user: ${system.user.name}`);
@@ -73,60 +73,27 @@ else {
 logger.debug(`  My home is: ${system.hostname()}`);
 logger.debug(`  Using interpreter: ${system.interpreter.node}`);
 logger.debug(`  Spawned as program: ${system.interpreter.program}`);
-/*if (system.program == 'alex') {
+if (system.program == 'alex') {
   logger.debug('  That\'s me!');
 }
-if (system.personality_count === 0) {
+logger.info('Loading personalities.');
+if (alex.personalities().length === 0) {
   logger.warn('  No personalities found.');
-  logger.info('  This is normal, if no personalities were created.');
 }
 else {
-  logger.info(`  Found ${system.personality_count} personalities.`);
-  // TODO: Reading in personalities.
-  /*personalities() {
-    let personalities = fs.readdirSync(`${__dirname}/../personalities/`);
-    return personalities.filter(file => file.match(/\.net$/));
-  }
-}*/
+  logger.info(`  Found ${alex.personalities().length} personalities.`);
+}
+
 logger.debug('Bootup finished. Starting server next.');
 
 logger.info('Starting server.');
 
-const greeting = `${JSON.stringify({
-  message: `${alex.name} ${alex.version}`
-})}\n`;
 
-let server = new net.Server(function (conn) {
-  logger.debug('Someone is talking to me ^-^');
-  conn.write(greeting);
-  conn.on('data', function (data) {
-    logger.debug(`They said '${data}'`);
-    try {
-      data = JSON.parse(data);
-    }
-    catch(error) {
-      logger.debug('*head titls* ???');
-      data = {message: data};
-    }
-    conn.write('Hello Friend.\n');
-  });
-  conn.on('end', function () {
-    logger.debug('Good bye friend! <3');
-  });
-});
+let socket = path.normalize(`${__dirname}/../tmp/alex.sock`);
+server.listen(socket);
 
-server.on('close', function () {
-  logger.info('Server shut down.');
-  logger.info('Going back to sleep.');
-});
-
-server.on('error', function (err) {
-  logger.error(err.stack);
-});
-
-server.listen(`${__dirname}/../tmp/alex.sock`, function () {
-  logger.info('Server successfully initiated.');
-  logger.debug('Waiting for messages.');
+process.on('exit', function () {
+  logger.info('Going back to snooze.');
 });
 
 process.on('SIGINT', function () {
