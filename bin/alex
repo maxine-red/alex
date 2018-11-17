@@ -90,6 +90,13 @@ logger.info('Starting server.');
 
 
 let socket = path.normalize(`${__dirname}/../tmp/alex.sock`);
+
+server.on('train', function(data, conn) {
+});
+
+server.on('score', function(data, conn) {
+});
+
 server.listen(socket);
 
 process.on('exit', function () {
