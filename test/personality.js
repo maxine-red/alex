@@ -18,15 +18,24 @@
  */
 
 let chai = require('chai');
+let path = require('path');
+let fs = require('fs');
 let Personality = require('../lib/personality');
 
 let expect = chai.expect;
-let personality = new Personality('test');
+let person = path.normalize(`${__dirname}/../personalities/test`);
+if (fs.existsSync(`${person}/model.json`)) {
+  fs.unlinkSync(`${person}/model.json`);
+}
+if (fs.existsSync(`${person}/weights.bin`)) {
+  fs.unlinkSync(`${person}/weights.bin`);
+}
+let personality = new Personality('test', 2);
 
 describe('Personality', function () {
   describe('new', function () {
     it('returns a new class instance object', function (done) {
-      let personality = new Personality('test');
+      let personality = new Personality('test', 2);
       expect(personality).to.be.an('object');
       done();
     });
@@ -35,4 +44,42 @@ describe('Personality', function () {
       done();
     });
   });
+  describe('#train()', function () {
+    it('trains a network, when data is given', function (done) {
+      let inputs = [[0,0], [0,1], [1,0], [1,1]];
+      let outputs = [0, 1, 1, 0];
+      let prom = personality.train(inputs, outputs);
+      expect(prom).to.be.instanceOf(Promise);
+      prom.then(function(){}).then(done, done);
+    });
+  });
+  describe('#train()', function () {
+    it('saves a network to disk', function (done) {
+      let prom = personality.save();
+      expect(prom).to.be.instanceOf(Promise);
+      prom.then(function () {
+        expect(fs.existsSync(`${person}/model.json`)).to.be.equal(true);
+        expect(fs.existsSync(`${person}/weights.bin`)).to.be.equal(true);
+        let test = new Personality('test');
+        expect(test).to.be.instanceOf(Personality);
+        done();
+      });
+    });
+  });
+  describe('#score()', function () {
+    it('returns a promise that resolves into scores', function (done) {
+      let prom = personality.predict([[0,0], [0,1], [1,1]]);
+      expect(prom).to.be.instanceOf(Promise);
+      prom.then(function (data) {
+        expect(data[0]).to.be.a('number');
+        done();
+      }, done).catch(done);
+    });
+  });
 });
+if (fs.existsSync(`${person}/model.json`)) {
+  fs.unlinkSync(`${person}/model.json`);
+}
+if (fs.existsSync(`${person}/weights.bin`)) {
+  fs.unlinkSync(`${person}/weights.bin`);
+}
