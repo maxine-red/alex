@@ -42,7 +42,7 @@ describe('Server', function () {
   describe('#listen()', function () {
     it('returns an Server object', function (done) {
       server_test.once('listening', function () {
-        server_test.close()
+        server_test.close();
       });
       expect(server_test.listen(socket_test)).to.be.instanceOf(net.Server);
       done();
@@ -60,17 +60,128 @@ describe('Server', function () {
     });
   });
   describe('receive and send messages', function () {
-    it('receives messages', function (done) {
+    it('returns an error when message can\'t be parsed', function (done) {
       server.listen(socket, function () {
-        sock = new net.Socket();
+        let sock = new net.Socket();
         sock.connect(socket, function () {
           sock.on('data', function (data) {
-            expect(data.toString()).to.be.equal('Hello Friend.\n');
+            data = JSON.parse(data.toString());
+            expect(data).to.have.property('event').and.be.equal('error');
+            expect(data).to.have.property('data').and.have.property('message')
+              .and.be.equal('malformed request');
             sock.end();
             server.close();
             done();
           });
           sock.write('Hello');
+        });
+      });
+    });
+    it('returns an error if no event type is given', function (done) {
+      server.listen(socket, function () {
+        let sock = new net.Socket();
+        sock.connect(socket, function () {
+          sock.on('data', function (data) {
+            data = JSON.parse(data.toString());
+            expect(data).to.have.property('event').and.be.equal('error');
+            expect(data).to.have.property('data').and.have.property('message')
+              .and.be.equal('malformed request');
+            sock.end();
+            server.close();
+            done();
+          });
+          sock.write('{}');
+        });
+      });
+    });
+    it('returns an error if an unknown event type is given', function (done) {
+      server.listen(socket, function () {
+        let sock = new net.Socket();
+        sock.connect(socket, function () {
+          sock.on('data', function (data) {
+            data = JSON.parse(data.toString());
+            expect(data).to.have.property('event').and.be.equal('error');
+            expect(data).to.have.property('data').and.have.property('message')
+              .and.be.equal('unknown event type');
+            sock.end();
+            server.close();
+            done();
+          });
+          sock.write(JSON.stringify({event: 'unknown'}));
+        });
+      });
+    });
+    it('accepts a training event with data', function (done) {
+      server.once('train', function (data, conn) {
+        conn.write(JSON.stringify({event: 'train', data: { message: 'done' }}));
+      });
+      server.listen(socket, function () {
+        let sock = new net.Socket();
+        sock.connect(socket, function () {
+          sock.on('data', function (data) {
+            data = JSON.parse(data.toString());
+            expect(data).to.have.property('event').and.be.equal('train');
+            expect(data).to.have.property('data').and.have.property('message')
+              .and.be.equal('done');
+            sock.end();
+            server.close();
+            done();
+          });
+          sock.write(JSON.stringify({event: 'train', data: {}}));
+        });
+      });
+    });
+    it('returns an error on train events without data', function (done) {
+      server.listen(socket, function () {
+        let sock = new net.Socket();
+        sock.connect(socket, function () {
+          sock.on('data', function (data) {
+            data = JSON.parse(data.toString());
+            expect(data).to.have.property('event').and.be.equal('error');
+            expect(data).to.have.property('data').and.have.property('message')
+              .and.be.equal('malformed request');
+            sock.end();
+            server.close();
+            done();
+          });
+          sock.write(JSON.stringify({event: 'train'}));
+        });
+      });
+    });
+    it('accepts a score event with data', function (done) {
+      server.once('score', function (data, conn) {
+        conn.write(JSON.stringify({event: 'score', data: { score: 1 }}));
+      });
+      server.listen(socket, function () {
+        let sock = new net.Socket();
+        sock.connect(socket, function () {
+          sock.on('data', function (data) {
+            data = JSON.parse(data.toString());
+            expect(data).to.have.property('event').and.be.equal('score');
+            expect(data).to.have.property('data').and.have.property('score')
+              .and.be.equal(1);
+            sock.end();
+            server.close();
+            done();
+          });
+          sock.write(JSON.stringify({event: 'score', data: {}}));
+        });
+      });
+    });
+    it('returns an error on score events without data', function (done) {
+      server.listen(socket, function () {
+        let sock = new net.Socket();
+        sock.connect(socket, function () {
+          sock.on('data', function (data) {
+            data = JSON.parse(data.toString());
+            expect(data).to.have.property('event').and.be.equal('error');
+            expect(data).to.have.property('data').and.have.property('message')
+              .and.be.equal('malformed request');
+            sock.end();
+            server.close();
+            done();
+          });
+          sock.write(JSON.stringify({event: 'score'}));
         });
       });
     });
