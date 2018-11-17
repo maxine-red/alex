@@ -20,6 +20,7 @@
 let chai = require('chai');
 let chai_array = require('chai-arrays');
 let Alex = require('../lib/alex');
+let Personality = require('../lib/personality');
 
 chai.use(chai_array);
 let expect = chai.expect;
@@ -29,7 +30,7 @@ describe('Alex', function () {
   describe('new', function () {
     it('returns a new class instance object', function (done) {
       let alex = new Alex();
-      expect(alex).to.be.an('object');
+      expect(alex).to.be.instanceOf(Alex);
       done();
     });
     it('has a \'name\' property, that is a string', function (done) {
@@ -46,8 +47,8 @@ describe('Alex', function () {
       expect(alex.personalities()).to.be.array();
       done();
     });
-    it('contains objects', function (done) {
-      expect(alex.personalities()[0]).to.be.an('object');
+    it('contains Personalities', function (done) {
+      expect(alex.personalities()[0]).to.be.instanceOf(Personality);
       done();
     });
   });

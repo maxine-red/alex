@@ -19,17 +19,60 @@
 
 let chai = require('chai');
 let path = require('path');
+let fs = require('fs');
+let net = require('net');
+let server_test = require('../lib/server');
 let server = require('../lib/server');
 
 let expect = chai.expect;
 let socket = path.normalize(`${__dirname}/../tmp/alex.sock`);
+let socket_fail = path.normalize(`${__dirname}/../tmp/alex_fail.sock`);
+let socket_test = path.normalize(`${__dirname}/../tmp/alex_test.sock`);
+if (fs.existsSync(socket)) {
+  fs.unlinkSync(socket);
+}
+if (fs.existsSync(socket_fail)) {
+  fs.unlinkSync(socket_fail);
+}
+if (fs.existsSync(socket_test)) {
+  fs.unlinkSync(socket_test);
+}
 
 describe('Server', function () {
   describe('#listen()', function () {
-    it('returns an object', function (done) {
-      expect(server.listen(socket)).to.be.an('object');
-      server.close();
+    it('returns an Server object', function (done) {
+      server_test.once('listening', function () {
+        server_test.close()
+      });
+      expect(server_test.listen(socket_test)).to.be.instanceOf(net.Server);
       done();
+    });
+    it('emits an error when errors occur', function(done) {
+      let server2 = new net.Server();
+      server_test.once('error', function (err) {
+        expect(err).to.have.property('code').and.be.equal('EADDRINUSE');
+        done();
+      });
+      server2.listen(socket_fail, function () {
+        server_test.listen(socket_fail);
+        server2.close();
+      });
+    });
+  });
+  describe('receive and send messages', function () {
+    it('receives messages', function (done) {
+      server.listen(socket, function () {
+        sock = new net.Socket();
+        sock.connect(socket, function () {
+          sock.on('data', function (data) {
+            expect(data.toString()).to.be.equal('Hello Friend.\n');
+            sock.end();
+            server.close();
+            done();
+          });
+          sock.write('Hello');
+        });
+      });
     });
   });
 });
