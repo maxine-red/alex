@@ -1,0 +1,15 @@
+{
+  "network": {
+    "layers": [
+      { "units": 64, "activation": "tanh", "inputShape": [1024]},
+      { "units": 1, "activation": "linear"}
+    ],
+    "parameters": { "optimizer": "sgd", "loss": "meanSquaredError" },
+    "train_parameters": {
+      "epochs": 100,
+      "batchSize": 32,
+      "shuffle": true,
+      "verbose": 0
+    }
+  }
+}

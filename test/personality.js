@@ -30,12 +30,12 @@ if (fs.existsSync(`${person}/model.json`)) {
 if (fs.existsSync(`${person}/weights.bin`)) {
   fs.unlinkSync(`${person}/weights.bin`);
 }
-let personality = new Personality('test', 2);
+let personality = new Personality('test');
 
 describe('Personality', function () {
   describe('new', function () {
     it('returns a new class instance object', function (done) {
-      let personality = new Personality('test', 2);
+      let personality = new Personality('test');
       expect(personality).to.be.an('object');
       done();
     });
