@@ -93,31 +93,24 @@ logger.info('Starting server.');
 let socket = path.normalize(`${__dirname}/../tmp/alex.sock`);
 
 server.on('train', function(data, conn) {
-  if (data.user !== undefined && typeof data.user === 'string' &&
-    data.inputs !== undefined && data.outputs !== undefined) {
-    try {
-      let personality;
-      if (alex.personalities().includes(data.user)) {
-        personality = new Personality(
-      }
-      else {
-      }
-    }
-    catch (err) {
-      logger.error(err.code);
-      server.emit('error', err, conn);
-    }
+  try {
+    alex.train(data);
+    conn.write(JSON.stringify({event: 'train', data: { message: 'done' }}));
   }
-  else {
-    server.emit('error', { code: 'no data object' }, conn);
+  catch (err) {
+    logger.error(err.code);
+    server.emit('error', err, conn);
   }
 });
 
 server.on('score', function(data, conn) {
-  if (data.inputs !== undefined) {
+  try {
+    let scores = alex.score(data);
+    conn.write(JSON.stringify({event: 'train', data: { scores: scores }}));
   }
-  else {
-    server.emit('error', { code: 'no data object' }, conn);
+  catch (err) {
+    logger.error(err.code);
+    server.emit('error', err, conn);
   }
 });
 
