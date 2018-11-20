@@ -53,8 +53,8 @@ communication, here are the objects:
   "event": "train",
   "data": {
     "user": "<username>",
-    "inputs": <two dimensional array that is comprised of input vector data>,
-    "outputs: <two dimensional array that is comprised of desired outputs>
+    "inputs": "<two dimensional array that is comprised of input vector data>",
+    "outputs: "<two dimensional array that is comprised of desired outputs>"
   }
 }
 ```
@@ -92,7 +92,7 @@ The other, currently available, object is:
   "event": "score",
   "data": {
     "user": "<username>",
-    "inputs": <two dimensional array that is comprised of input vector data>
+    "inputs": "<two dimensional array that is comprised of input vector data>"
   }
 }
 ```
@@ -112,8 +112,8 @@ The response will be an object with score data:
 {
   "event": "score",
   "data": {
-    "user": <username>,
-    "scores": <array of floating point numbers, exactly the same size as inputs>
+    "user": "<username>",
+    "scores": "<array of floating point numbers, exactly the same size as inputs>"
   }
 }
 ```
