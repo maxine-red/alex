@@ -62,7 +62,7 @@ if (system.platform === 'windows') {
 else {
   logger.debug(`    Running as user: ${system.user.name}`);
   if (!(system.user.name == 'alex' || system.user.name == 'al3x')) {
-    logger.warn('    That user is not me for sure.');
+    logger.debug('    That user is not me for sure.');
   }
   if (system.user.id === 0) {
     logger.error('  I\'m running as root!');

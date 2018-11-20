@@ -36,12 +36,16 @@ Alex is versioned following Semver 2.0.0
 
 ## Installation
 
+Clone this repository and go into the created directory.
+
 Just run ` $ NODE_ENV=production npm install` or `npm install --production`
 
 Don't forget to create a `production.js` in config/ if you need special
 configuration.
 
 A more thorough installation guide will be added later.
+
+As of 1.0.0, there is no global installation possible.
 
 ## Use
 
