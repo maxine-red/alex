@@ -46,6 +46,7 @@ describe('Personality', function () {
   });
   describe('#train()', function () {
     it('trains a network, when data is given', function (done) {
+      this.timeout(0);
       let inputs = [[0,0], [0,1], [1,0], [1,1]];
       let outputs = [0, 1, 1, 0];
       let prom = personality.train(inputs, outputs);

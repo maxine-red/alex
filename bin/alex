@@ -93,25 +93,23 @@ logger.info('Starting server.');
 let socket = path.normalize(`${__dirname}/../tmp/alex.sock`);
 
 server.on('train', function(data, conn) {
-  try {
-    alex.train(data);
-    conn.write(JSON.stringify({event: 'train', data: { message: 'done' }}));
-  }
-  catch (err) {
+  alex.train(data).then( function () {
+    conn.write(JSON.stringify({event: 'train',
+      data: { user: data.user, message: 'done' }}));
+  }, function (err) {
     logger.error(err.code);
     server.emit('error', err, conn);
-  }
+  });
 });
 
 server.on('score', function(data, conn) {
-  try {
-    let scores = alex.score(data);
-    conn.write(JSON.stringify({event: 'train', data: { scores: scores }}));
-  }
-  catch (err) {
+  alex.score(data).then(function (scors) {
+    conn.write(JSON.stringify({event: 'score',
+      data: { user: data.user, scores: scores }}));
+  }, function (err) {
     logger.error(err.code);
     server.emit('error', err, conn);
-  }
+  });
 });
 
 server.listen(socket);

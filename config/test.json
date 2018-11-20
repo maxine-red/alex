@@ -5,7 +5,7 @@
       { "units": 1, "activation": "sigmoid"}
     ],
     "train_parameters": {
-      "epochs": 10,
+      "epochs": 100,
       "batchSize": 4
     }
   }

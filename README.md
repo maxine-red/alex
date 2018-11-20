@@ -13,33 +13,121 @@
 
 ## Description
 
-Alex is a web server like program, that accepts requests for scores and learns
-scoring behavior from users.
+Alex is a server for artificial intelligence applications.
 
-How it will work, is like the following:
-- users register for service and are assigned a key
-- users score tagged content (usually art)
-- Alex learns from these scores
-- request for scoring is sent to Alex and Alex returns a score, that they think
-  the user will assign to that requested art
+The process is like the following:
+- Alex listens locally (as of 1.0.0 only UNIX sockets are supported with a
+  raw JSON communication protocol) for new requests to train or score
+- Those requests are processed asynchronously and results are returned
 
-Alex is meant as a middle ware, between them and a service provider
-([Weasyl](https://weasyl.com) is aimed for, but others can be connected).
+Documentation of code can be found here: [documentation](DOCUMENTATION.md).
 
-Requests will be made to Alex, who then connects to the service provider and
-adds additional fields (scoring) to it.
+A word of caution though! That documentation refers to the development
+documentation. Internal function calls are not considered part of the public
+API.
+
+Only network communication is part of the public API and thus part of the
+stability promise, Semver offers.
 
 ## Versioning
 
 Alex is versioned following Semver 2.0.0
 
-## Documentation
-
-Documentation can be found under [documentation](DOCUMENTATION.md).
 
 ## Installation
 
-Currently no installation information are available.
+Just run ` $ NODE_ENV=production npm install` or `npm install --production`
+
+Don't forget to create a `production.js` in config/ if you need special
+configuration.
+
+A more thorough installation guide will be added later.
+
+## Use
+
+As the public API is comprised of only JSON objects, exchanged over network
+communication, here are the objects:
+
+```json
+{
+  "event": "train",
+  "data": {
+    "user": "<username>",
+    "inputs": <two dimensional array that is comprised of input vector data>,
+    "outputs: <two dimensional array that is comprised of desired outputs>
+  }
+}
+```
+
+To give a clearer example, here with a user 'test' and with training data for
+the XOR function.
+
+```json
+{
+  "event": "train",
+  "data": {
+    "user": "test",
+    "inputs": [[0,0], [0,1], [1,0], [1,1]],
+    "outputs: [[0], [1], [1], [0]]
+  }
+}
+```
+
+This will lead to a response in this format.
+```json
+{
+  "event": "train",
+  "data": {
+    "user": "<username>",
+    "message": "done"
+  }
+}
+```
+Where username is the name of the user, the training was done for.
+
+The other, currently available, object is:
+
+```json
+{
+  "event": "score",
+  "data": {
+    "user": "<username>",
+    "inputs": <two dimensional array that is comprised of input vector data>
+  }
+}
+```
+To pick up the example from above, it would look like this with actual data:
+```json
+{
+  "event": "score",
+  "data": {
+    "user": "test",
+    "inputs": [[0,0], [0,1], [1,0], [1,1]]
+  }
+}
+```
+
+The response will be an object with score data:
+```json
+{
+  "event": "score",
+  "data": {
+    "user": <username>,
+    "scores": <array of floating point numbers, exactly the same size as inputs>
+  }
+}
+```
+
+Error messages are in the format of:
+
+```json
+{
+  "event": "error",
+  "data": {
+    "message": "<error message>"
+  }
+}
+```
 
 ## Donations
 

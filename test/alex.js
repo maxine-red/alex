@@ -20,7 +20,6 @@
 let chai = require('chai');
 let chai_array = require('chai-arrays');
 let Alex = require('../lib/alex');
-let Personality = require('../lib/personality');
 
 chai.use(chai_array);
 let expect = chai.expect;
@@ -42,212 +41,144 @@ describe('Alex', function () {
       done();
     });
   });
+  describe('#personalities()', function () {
+    it('returns an array of personality names', function (done) {
+      let personalities = alex.personalities();
+      expect(personalities).to.be.an('array');
+      expect(personalities[0]).to.be.a('string').and.be.equal('test');
+      done();
+    });
+  });
   describe('#train()', function () {
-    it('throws an error if no user is specified', function (done) {
-      try {
-        alex.train({inputs: [], outputs: []});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('returns a promise', function (done) {
+      let prom = alex.train({});
+      expect(prom).to.be.instanceOf(Promise);
+      prom.catch(function (err) { err.message; });
+      done();
     });
-    it('throws an error if no inputs are specified', function (done) {
-      try {
-        alex.train({user: 'test', outputs: []});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if no user is specified', function (done) {
+      alex.train({inputs: [], outputs: []})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if no outputs are specified', function (done) {
-      try {
-        alex.train({user: 'test', inputs: []});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if no inputs are specified', function (done) {
+      alex.train({user: 'test', outputs: []})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if user is not a string', function (done) {
-      try {
-        alex.train({user: [], inputs: [], outputs: []});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if no outputs are specified', function (done) {
+      alex.train({user: 'test', inputs: []})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if inputs are not an array', function (done) {
-      try {
-        alex.train({user: 'test', inputs: 'data', outputs: []});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if user is not a string', function (done) {
+      alex.train({user: [], inputs: [], outputs: []})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if outputs are not an array', function (done) {
-      try {
-        alex.train({user: 'test', inputs: [[1,1]], outputs: 'data'});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if inputs are not an array', function (done) {
+      alex.train({user: 'test', inputs: 'data', outputs: []})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if inputs and outputs are not of same size',
+    it('rejects if outputs are not an array', function (done) {
+      alex.train({user: 'test', inputs: [[1,1]], outputs: 'data'})
+        .then(resolve_bad, reject).then(done, done);
+    });
+    it('rejects if inputs and outputs are not of same size',
       function (done) {
-      try {
-        alex.train({user: 'test', inputs: [[1,1], [0,1]], outputs: [[1]]});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+        alex.train({user: 'test', inputs: [[1,1], [0,1]], outputs: [[1]]})
+          .then(resolve_bad, reject).then(done, done);
+      });
+    it('rejects if inputs is not an array of arrays', function (done) {
+      alex.train({user: 'test', inputs: ['test'], outputs: ['test']})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if inputs is not an array of arrays', function (done) {
-      try {
-        alex.train({user: 'test', inputs: ['test'], outputs: ['test']});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if inputs are not in correct shape', function (done) {
+      alex.train({user: 'test', inputs: [[1]], outputs: [[1]]})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if inputs are not in correct shape', function (done) {
-      try {
-        alex.train({user: 'test', inputs: [[1]], outputs: [[1]]});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
-    });
-    it('throws an error if inputs not only contains numbers at 2nd level',
+    it('rejects if inputs not only contains numbers at 2nd level',
       function (done) {
-      try {
-        alex.train({user: 'test', inputs: [['test', 'test']], outputs: [[1]]});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+        alex.train({user: 'test', inputs: [['test', 'test']], outputs: [[1]]})
+          .then(resolve_bad, reject).then(done, done);
+      });
+    it('rejects if outputs is not an array of arrays', function (done) {
+      alex.train({user: 'test', inputs: [[1,1]], outputs: ['test']})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if outputs is not an array of arrays', function (done) {
-      try {
-        alex.train({user: 'test', inputs: [[1,1]], outputs: ['test']});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if outputs are not in correct shape', function (done) {
+      alex.train({user: 'test', inputs: [[1,1]], outputs: [[1,1]]})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if outputs are not in correct shape', function (done) {
-      try {
-        alex.train({user: 'test', inputs: [[1,1]], outputs: [[1,1]]});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
-    });
-    it('throws an error if outputs not only contains numbers at 2nd level',
+    it('rejects if outputs not only contains numbers at 2nd level',
       function (done) {
-      try {
-        alex.train({user: 'test', inputs: [[1, 1]], outputs: [['test']]});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+        alex.train({user: 'test', inputs: [[1, 1]], outputs: [['test']]})
+          .then(resolve_bad, reject).then(done, done);
+      });
+    it('resolves when correct data is given', function (done) {
+      this.timeout(0);
+      let prom = alex.train({user: 'test', inputs: [[1,1], [1,0], [0,1], [0,0]],
+        outputs: [[0], [1], [1], [0]]});
+      expect(prom).to.be.instanceOf(Promise);
+      prom.then(function (data) {
+        expect(data).to.have.property('validationData');
+      }, reject_bad).then(done, done);
     });
   });
   describe('#score()', function () {
-    it('throws an error if no user is specified', function (done) {
-      try {
-        alex.score({inputs: []});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('returns a promise', function (done) {
+      let prom = alex.score({});
+      expect(prom).to.be.instanceOf(Promise);
+      prom.catch(function (err) { err.message; });
+      done();
     });
-    it('throws an error if no inputs are specified', function (done) {
-      try {
-        alex.score({user: 'test'});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if no user is specified', function (done) {
+      alex.score({inputs: []})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if user is not a string', function (done) {
-      try {
-        alex.score({user: [], inputs: []});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if no inputs are specified', function (done) {
+      alex.score({user: 'test'})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if inputs are not an array', function (done) {
-      try {
-        alex.score({user: 'test', inputs: 'data'});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if user is not a string', function (done) {
+      alex.score({user: [], inputs: []})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if inputs is not an array of arrays', function (done) {
-      try {
-        alex.score({user: 'test', inputs: ['test']});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if inputs are not an array', function (done) {
+      alex.score({user: 'test', inputs: 'data'})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if inputs are not in correct shape', function (done) {
-      try {
-        alex.score({user: 'test', inputs: [[1]]});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+    it('rejects if inputs is not an array of arrays', function (done) {
+      alex.score({user: 'test', inputs: ['test']})
+        .then(resolve_bad, reject).then(done, done);
     });
-    it('throws an error if inputs not only contains numbers at 2nd level',
+    it('rejects if inputs are not in correct shape', function (done) {
+      alex.score({user: 'test', inputs: [[1]]})
+        .then(resolve_bad, reject).then(done, done);
+    });
+    it('rejects if inputs not only contains numbers at 2nd level',
       function (done) {
-      try {
-        alex.score({user: 'test', inputs: [['test', 'test']]});
-        throw new Error('Test failed');
-      }
-      catch (err) {
-        expect(err.message).to.be.equal('malformed request');
-        done();
-      }
+        alex.score({user: 'test', inputs: [['test', 'test']]})
+          .then(resolve_bad, reject).then(done, done);
+      });
+    it('resolves when correct data is given', function (done) {
+      let prom = alex.score({user: 'test',
+        inputs: [[1,1], [1,0], [0,1], [0,0]]});
+      expect(prom).to.be.instanceOf(Promise);
+      prom.then(function (data) {
+        expect(data).to.be.instanceOf(Float32Array);
+        expect(data.length).to.be.equal(4);
+        expect(data[0]).to.be.a('number');
+      }, reject_bad).then(done, done);
     });
   });
 });
+
+function resolve_bad () {
+  expect('test failed').to.be.equal('malformed request');
+}
+
+function reject_bad (err) {
+  expect(err.message).to.be.equal('No error message');
+}
+
+
+function reject (err) {
+  expect(err.message).to.be.equal('malformed request');
+}

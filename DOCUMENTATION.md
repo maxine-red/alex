@@ -4,27 +4,33 @@
 
 -   [Alex][1]
     -   [personalities][2]
--   [Personality][3]
-    -   [Parameters][4]
-    -   [train][5]
+    -   [train][3]
+        -   [Parameters][4]
+    -   [score][5]
         -   [Parameters][6]
-    -   [predict][7]
+    -   [validate_data][7]
         -   [Parameters][8]
-    -   [save][9]
-    -   [load_model][10]
-        -   [Parameters][11]
--   [System][12]
-    -   [hostname][13]
-    -   [working_directory][14]
-    -   [run_time][15]
-    -   [memory_use][16]
-    -   [relative_memory_use][17]
--   [on_connect][18]
-    -   [Parameters][19]
--   [on_error][20]
-    -   [Parameters][21]
--   [on_close][22]
--   [on_listen][23]
+-   [Personality][9]
+    -   [Parameters][10]
+    -   [train][11]
+        -   [Parameters][12]
+    -   [predict][13]
+        -   [Parameters][14]
+    -   [save][15]
+    -   [load_model][16]
+        -   [Parameters][17]
+-   [System][18]
+    -   [hostname][19]
+    -   [working_directory][20]
+    -   [run_time][21]
+    -   [memory_use][22]
+    -   [relative_memory_use][23]
+-   [on_connect][24]
+    -   [Parameters][25]
+-   [on_error][26]
+    -   [Parameters][27]
+-   [on_close][28]
+-   [on_listen][29]
 
 ## Alex
 
@@ -39,7 +45,40 @@ Main class to combine all of Alex's parts.
 
 Looks for personalities, stored on disk.
 
-Returns **[Array][24]** Array of personality names, stored on disk
+Returns **[Array][30]** Array of personality names, stored on disk
+
+### train
+
+Validates input data and calls a Personality to train with.
+
+#### Parameters
+
+-   `data` **[Object][31]** inputs data
+
+Returns **[Promise][32]** to be resolved when training is done
+
+### score
+
+Uses user input data to score it, considering the chosen personality
+
+#### Parameters
+
+-   `data` **[object][31]** user input data
+
+Returns **[Promise][32]** to be resolved with an array of float scores
+
+### validate_data
+
+Validation method for input data.
+It's designed to bail out as soon as possible and to validate input data
+for use with neural networks.
+
+#### Parameters
+
+-   `data` **[object][31]** user input data
+-   `func` **[string][33]** function this method was invoked by
+
+Returns **[Promise][32]** to be resolved if data is valid
 
 ## Personality
 
@@ -47,8 +86,8 @@ Class for Personalities.
 
 ### Parameters
 
--   `name` **[String][25]** name of this personality
--   `input_size` **[Number][26]** size for inputs, data needs to have exactly
+-   `name` **[String][33]** name of this personality
+-   `input_size` **[Number][34]** size for inputs, data needs to have exactly
     this size
 
 **Meta**
@@ -62,10 +101,10 @@ Train a neural network and save it onto disk.
 
 #### Parameters
 
--   `inputs` **[Array][24]** input vector data
--   `outputs` **[Array][24]** desired output vector data
+-   `inputs` **[Array][30]** input vector data
+-   `outputs` **[Array][30]** desired output vector data
 
-Returns **[Promise][27]** Promise to be resolved after training is done
+Returns **[Promise][32]** Promise to be resolved after training is done
 
 **Meta**
 
@@ -77,15 +116,15 @@ Scoring function for a personality
 
 #### Parameters
 
--   `inputs` **[Array][24]** input data
+-   `inputs` **[Array][30]** input data
 
-Returns **[Promise][27]** Promise to be resolved with score data
+Returns **[Promise][32]** Promise to be resolved with score data
 
 ### save
 
 Saves current model to disk.
 
-Returns **[Promise][27]** Promise to be resolved after saving
+Returns **[Promise][32]** Promise to be resolved after saving
 
 ### load_model
 
@@ -95,7 +134,7 @@ Helper method for model loading.
 
 -   `model` **tf.Model** = Model loaded from file (hopefully with weights)
 
-Returns **[undefined][28]** 
+Returns **[undefined][35]** 
 
 ## System
 
@@ -111,31 +150,31 @@ Attributes are gatehred on creation, while methods show live information.
 
 Fetch current hostname and return it.
 
-Returns **[String][25]** Current hostname
+Returns **[String][33]** Current hostname
 
 ### working_directory
 
 Return the working directory of this process.
 
-Returns **[String][25]** Current working directory
+Returns **[String][33]** Current working directory
 
 ### run_time
 
 Gather how long this process is running.
 
-Returns **[Number][26]** Number of seconds, this process is running
+Returns **[Number][34]** Number of seconds, this process is running
 
 ### memory_use
 
 Returns memory used (allocated) by process.
 
-Returns **[Number][26]** Number of allocated memory, in MB
+Returns **[Number][34]** Number of allocated memory, in MB
 
 ### relative_memory_use
 
 Returns an objec with percentages of memory used, relative to max values.
 
-Returns **[Object][29]** Percentages of max memory values used.
+Returns **[Object][31]** Percentages of max memory values used.
 
 ## on_connect
 
@@ -145,7 +184,7 @@ Method that is invoked when a new client connects
 
 -   `conn` **net.Connection** Connection from socket
 
-Returns **[undefined][28]** 
+Returns **[undefined][35]** 
 
 ## on_error
 
@@ -153,78 +192,92 @@ Error event handler
 
 ### Parameters
 
--   `err` **[Error][30]** Error thrown
+-   `err` **[Error][36]** Error thrown
+-   `conn` **net.Connection** Optional connection to send error message
+    through.
 
-Returns **[undefined][28]** 
+Returns **[undefined][35]** 
 
 ## on_close
 
 Event when server closes
 
-Returns **[undefined][28]** 
+Returns **[undefined][35]** 
 
 ## on_listen
 
 Event handler for server start
 
-Returns **[undefined][28]** 
+Returns **[undefined][35]** 
 
 [1]: #alex
 
 [2]: #personalities
 
-[3]: #personality
+[3]: #train
 
 [4]: #parameters
 
-[5]: #train
+[5]: #score
 
 [6]: #parameters-1
 
-[7]: #predict
+[7]: #validate_data
 
 [8]: #parameters-2
 
-[9]: #save
+[9]: #personality
 
-[10]: #load_model
+[10]: #parameters-3
 
-[11]: #parameters-3
+[11]: #train-1
 
-[12]: #system
+[12]: #parameters-4
 
-[13]: #hostname
+[13]: #predict
 
-[14]: #working_directory
+[14]: #parameters-5
 
-[15]: #run_time
+[15]: #save
 
-[16]: #memory_use
+[16]: #load_model
 
-[17]: #relative_memory_use
+[17]: #parameters-6
 
-[18]: #on_connect
+[18]: #system
 
-[19]: #parameters-4
+[19]: #hostname
 
-[20]: #on_error
+[20]: #working_directory
 
-[21]: #parameters-5
+[21]: #run_time
 
-[22]: #on_close
+[22]: #memory_use
 
-[23]: #on_listen
+[23]: #relative_memory_use
 
-[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[24]: #on_connect
 
-[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[25]: #parameters-7
 
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[26]: #on_error
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[27]: #parameters-8
 
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[28]: #on_close
 
-[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[29]: #on_listen
 
-[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
+[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[35]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+
+[36]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
