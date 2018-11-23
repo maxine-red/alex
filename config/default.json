@@ -1,4 +1,8 @@
 {
+  "communication": {
+    "host": "127.0.0.1",
+    "port": "3000"
+  },
   "network": {
     "layers": [
       { "units": 64, "activation": "tanh", "inputShape": [1024]},
