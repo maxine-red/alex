@@ -19,11 +19,15 @@
 
 let chai = require('chai');
 let chai_array = require('chai-arrays');
-let Alex = require('../lib/alex');
+const Alex = require('../lib/alex');
+const System = require('../lib/system');
 
 chai.use(chai_array);
 let expect = chai.expect;
 let alex = new Alex();
+
+// TODO: Define the API here and in other test files. Best use pending tests to
+// define behavior, then write propert tests later.
 
 describe('Alex', function () {
   describe('new', function () {
@@ -38,6 +42,17 @@ describe('Alex', function () {
     });
     it('has a \'version\' property, that is a string', function (done) {
       expect(alex).to.have.property('version').and.be.a('string');
+      done();
+    });
+  });
+  describe('diagnose()', function () {
+    it('returns an object', function (done) {
+      expect(alex.diagnose()).to.be.an('object');
+      done();
+    });
+    let diagnose = alex.diagnose();
+    it('is a System object', function (done) {
+      expect(diagnose).to.be.instanceOf(System);
       done();
     });
   });
