@@ -42,6 +42,39 @@ describe('Alex', function () {
     });
   });
   describe('#personalities()', function () {
+    it('returns an array of personality names');
+  });
+  describe('#train()', function () {
+    it('returns a promise');
+    it('rejects if no user is specified');
+    it('rejects if no inputs are specified');
+    it('rejects if no outputs are specified');
+    it('rejects if user is not a string');
+    it('rejects if inputs are not an array');
+    it('rejects if outputs are not an array');
+    it('rejects if inputs and outputs are not of same size');
+    it('rejects if inputs is not an array of arrays');
+    it('rejects if inputs are not in correct shape');
+    it('rejects if inputs not only contains numbers at 2nd level');
+    it('rejects if outputs is not an array of arrays');
+    it('rejects if outputs are not in correct shape');
+    it('rejects if outputs not only contains numbers at 2nd level');
+    it('resolves when correct data is given');
+  });
+  describe('#score()', function () {
+    it('returns a promise');
+    it('rejects if no user is specified');
+    it('rejects if no inputs are specified');
+    it('rejects if user is not a string');
+    it('rejects if inputs are not an array');
+    it('rejects if inputs is not an array of arrays');
+    it('rejects if inputs are not in correct shape');
+    it('rejects if inputs not only contains numbers at 2nd level');
+    it('resolves when correct data is given');
+  });
+});
+
+  /*describe('#personalities()', function () {
     it('returns an array of personality names', function (done) {
       let personalities = alex.personalities();
       expect(personalities).to.be.an('array');
@@ -181,4 +214,4 @@ function reject_bad (err) {
 
 function reject (err) {
   expect(err.message).to.be.equal('malformed request');
-}
+}*/
