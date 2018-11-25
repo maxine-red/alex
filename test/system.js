@@ -28,45 +28,50 @@ describe('System', function () {
   describe('new', function () {
     it('returns a System object', function (done) {
       let system = new System();
-      expect(system).to.be.an('object');
+      expect(system).to.be.instanceOf(System);
       done();
     });
     describe('with properties', function () {
       describe('cpu:', function () {
         it('is an object', function (done) {
-          expect(system).to.have.property('cpu').and.be.an('object');
+          expect(system.cpu).to.be.an('object');
           done();
         });
-        it('has a \'cores\' property, that is a number and bigger than 0',
-          function (done) {
-            expect(system.cpu).to.have.property('cores').and.be.a('number')
-              .and.be.above(0);
-            done();
-          });
-        it('has an \'architecture\' property, that is a string',
-          function (done) {
-            expect(system.cpu).to.have.property('architecture')
-              .and.be.a('string');
-            done();
-          });
+        it('has a \'cores\' property, that is a number and bigger than 0', function (done) {
+          expect(system.cpu).to.have.property('cores').and.be.a('number')
+            .and.be.above(0);
+          done();
+        });
+        it('has an \'architecture\' property, that is a string', function (done) {
+          expect(system.cpu).to.have.property('architecture').and.be.a('string');
+          done();
+        });
       });
       describe('memory:', function () {
         it('is an object', function (done) {
-          expect(system).to.have.property('memory').and.be.an('object');
+          expect(system.memory).to.be.an('object');
           done();
         });
-        it('has a \'total\' property, that is a number and positive',
-          function (done) {
-            expect(system.memory).to.have.property('total').and.be.a('number')
-              .and.be.above(0);
-            done();
-          });
-        it('has an \'max_heap\' property, that is a number and positive',
-          function (done) {
-            expect(system.memory).to.have.property('max_heap')
-              .and.be.a('number').and.be.above(0);
-            done();
-          });
+        it('has a \'total\' property, that is a number and positive', function (done) {
+          expect(system.memory).to.have.property('total').and.be.a('number')
+            .and.be.above(0);
+          done();
+        });
+        it('has an \'max_heap\' property, that is a number and positive', function (done) {
+          expect(system.memory).to.have.property('max_heap').and.be.a('number')
+            .and.be.above(0);
+          done();
+        });
+        it('has an \'used\' property, that is a number and positive', function (done) {
+          expect(system.memory).to.have.property('used').and.be.a('number')
+            .and.be.above(0);
+          done();
+        });
+      });
+      it('has a \'run_time\' property, that is a number and positive', function (done) {
+        expect(system).to.have.property('run_time').and.be.a('number')
+          .and.be.above(0);
+        done();
       });
       it('has a \'platform\' property, that is a string', function (done) {
         expect(system).to.have.property('platform').and.be.a('string');
@@ -74,97 +79,48 @@ describe('System', function () {
       });
       describe('user:', function () {
         it('is an object', function (done) {
-          expect(system).to.have.property('user').and.be.an('object');
+          expect(system.user).to.be.an('object');
           done();
         });
-        it('has an \'id\' property, that is a number and bigger than 0',
-          function (done) {
-            expect(system.user).to.have.property('id').and.be.a('number')
-              .and.be.above(0);
-            done();
-          });
-        it('has a \'name\' property, that is a string',
-          function (done) {
-            expect(system.user).to.have.property('name')
-              .and.be.a('string');
-            done();
-          });
+        it('has an \'id\' property, that is a number and is positive', function (done) {
+          expect(system.user).to.have.property('id').and.be.a('number')
+            .and.be.above(0);
+          done();
+        });
+        it('has a \'name\' property, that is a string', function (done) {
+          expect(system.user).to.have.property('name').and.be.a('string');
+          done();
+        });
       });
       describe('group', function () {
         it('is an object', function (done) {
-          expect(system).to.have.property('group').and.be.an('object');
+          expect(system.group).to.be.an('object');
           done();
         });
-        it('has an \'id\' property, that is a number and bigger than 0',
-          function (done) {
-            expect(system.group).to.have.property('id').and.be.a('number')
-              .and.be.above(0);
-            done();
-          });
-        it('has a \'name\' property, that is a string',
-          function (done) {
-            expect(system.group).to.have.property('name')
-              .and.be.a('string');
-            done();
-          });
+        it('has an \'id\' property, that is a number and bigger than 0', function (done) {
+          expect(system.group).to.have.property('id').and.be.a('number')
+            .and.be.above(0);
+          done();
+        });
+        it('has a \'name\' property, that is a string', function (done) {
+          expect(system.group).to.have.property('name').and.be.a('string');
+          done();
+        });
       });
       describe('interpreter:', function () {
         it('is an object', function (done) {
-          expect(system).to.have.property('interpreter').and.be.an('object');
+          expect(system.interpreter).to.be.an('object');
           done();
         });
         it('has a \'node\' property, that is a string', function (done) {
-          expect(system.interpreter).to.have.property('node')
-            .and.be.a('string');
+          expect(system.interpreter).to.have.property('node').and.be.a('string');
           done();
         });
-        it('has an \'program\' property, that is a string',
-          function (done) {
-            expect(system.interpreter).to.have.property('program')
-              .and.be.an('string');
-            done();
-          });
+        it('has an \'program\' property, that is a string', function (done) {
+          expect(system.interpreter).to.have.property('program').and.be.a('string');
+          done();
+        });
       });
-    });
-  });
-  describe('#hostname()', function () {
-    it('returns a string', function (done) {
-      expect(system.hostname()).to.be.a('string');
-      done();
-    });
-  });
-  describe('#working_directory()', function () {
-    it('returns a string', function (done) {
-      expect(system.working_directory()).to.be.a('string');
-      done();
-    });
-  });
-  describe('#run_time()', function () {
-    it('returns a positive number', function (done) {
-      expect(system.run_time()).to.be.a('number').and.be.above(0);
-      done();
-    });
-  });
-  describe('#memory_use()', function () {
-    it('returns is a positive number', function (done) {
-      expect(system.memory_use()).to.be.a('number').and.be.above(0);
-      done();
-    });
-  });
-  describe('#relative_memory_use()', function () {
-    it('returns an object', function (done) {
-      expect(system.relative_memory_use()).to.be.an('object');
-      done();
-    });
-    it('has a \'system\' property, that is a positive number', function (done) {
-      expect(system.relative_memory_use()).to.have.property('system')
-        .and.be.a('number').and.be.above(0);
-      done();
-    });
-    it('has a \'heap\' property, that is a positive number', function (done) {
-      expect(system.relative_memory_use()).to.have.property('heap')
-        .and.be.a('number').and.be.above(0);
-      done();
     });
   });
 });
