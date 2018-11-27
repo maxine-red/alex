@@ -20,14 +20,17 @@
 let chai = require('chai');
 let chai_array = require('chai-arrays');
 const Alex = require('../lib/alex');
-const System = require('../lib/system');
 
 chai.use(chai_array);
 let expect = chai.expect;
 let alex = new Alex();
 
-// TODO: Define the API here and in other test files. Best use pending tests to
-// define behavior, then write propert tests later.
+/*
+ * Functions of Alex:
+ * - save actions (tag array, score pairs) in a Memory object
+ * - use stored Memories to learn prefrences
+ * - use learned preferences to score items
+ */
 
 describe('Alex', function () {
   describe('new', function () {
@@ -36,197 +39,13 @@ describe('Alex', function () {
       expect(alex).to.be.instanceOf(Alex);
       done();
     });
-    it('has a \'name\' property, that is a string', function (done) {
-      expect(alex).to.have.property('name').and.be.a('string');
-      done();
-    });
-    it('has a \'version\' property, that is a string', function (done) {
-      expect(alex).to.have.property('version').and.be.a('string');
-      done();
-    });
   });
-  describe('diagnose()', function () {
-    it('returns an object', function (done) {
-      expect(alex.diagnose()).to.be.an('object');
-      done();
-    });
-    let diagnose = alex.diagnose();
-    it('is a System object', function (done) {
-      expect(diagnose).to.be.instanceOf(System);
-      done();
-    });
+  describe('#remember()', function () {
   });
-  describe('#personalities()', function () {
-    it('returns an array of personality names');
+  describe('#learn()', function () {
   });
-  describe('#train()', function () {
-    it('returns a promise');
-    it('rejects if no user is specified');
-    it('rejects if no inputs are specified');
-    it('rejects if no outputs are specified');
-    it('rejects if user is not a string');
-    it('rejects if inputs are not an array');
-    it('rejects if outputs are not an array');
-    it('rejects if inputs and outputs are not of same size');
-    it('rejects if inputs is not an array of arrays');
-    it('rejects if inputs are not in correct shape');
-    it('rejects if inputs not only contains numbers at 2nd level');
-    it('rejects if outputs is not an array of arrays');
-    it('rejects if outputs are not in correct shape');
-    it('rejects if outputs not only contains numbers at 2nd level');
-    it('resolves when correct data is given');
+  describe('#predict()', function () {
   });
-  describe('#score()', function () {
-    it('returns a promise');
-    it('rejects if no user is specified');
-    it('rejects if no inputs are specified');
-    it('rejects if user is not a string');
-    it('rejects if inputs are not an array');
-    it('rejects if inputs is not an array of arrays');
-    it('rejects if inputs are not in correct shape');
-    it('rejects if inputs not only contains numbers at 2nd level');
-    it('resolves when correct data is given');
+  describe('#act()', function () {
   });
 });
-
-  /*describe('#personalities()', function () {
-    it('returns an array of personality names', function (done) {
-      let personalities = alex.personalities();
-      expect(personalities).to.be.an('array');
-      expect(personalities[0]).to.be.a('string').and.be.equal('test');
-      done();
-    });
-  });
-  describe('#train()', function () {
-    it('returns a promise', function (done) {
-      let prom = alex.train({});
-      expect(prom).to.be.instanceOf(Promise);
-      prom.catch(function (err) { err.message; });
-      done();
-    });
-    it('rejects if no user is specified', function (done) {
-      alex.train({inputs: [], outputs: []})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if no inputs are specified', function (done) {
-      alex.train({user: 'test', outputs: []})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if no outputs are specified', function (done) {
-      alex.train({user: 'test', inputs: []})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if user is not a string', function (done) {
-      alex.train({user: [], inputs: [], outputs: []})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if inputs are not an array', function (done) {
-      alex.train({user: 'test', inputs: 'data', outputs: []})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if outputs are not an array', function (done) {
-      alex.train({user: 'test', inputs: [[1,1]], outputs: 'data'})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if inputs and outputs are not of same size',
-      function (done) {
-        alex.train({user: 'test', inputs: [[1,1], [0,1]], outputs: [[1]]})
-          .then(resolve_bad, reject).then(done, done);
-      });
-    it('rejects if inputs is not an array of arrays', function (done) {
-      alex.train({user: 'test', inputs: ['test'], outputs: ['test']})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if inputs are not in correct shape', function (done) {
-      alex.train({user: 'test', inputs: [[1]], outputs: [[1]]})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if inputs not only contains numbers at 2nd level',
-      function (done) {
-        alex.train({user: 'test', inputs: [['test', 'test']], outputs: [[1]]})
-          .then(resolve_bad, reject).then(done, done);
-      });
-    it('rejects if outputs is not an array of arrays', function (done) {
-      alex.train({user: 'test', inputs: [[1,1]], outputs: ['test']})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if outputs are not in correct shape', function (done) {
-      alex.train({user: 'test', inputs: [[1,1]], outputs: [[1,1]]})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if outputs not only contains numbers at 2nd level',
-      function (done) {
-        alex.train({user: 'test', inputs: [[1, 1]], outputs: [['test']]})
-          .then(resolve_bad, reject).then(done, done);
-      });
-    it('resolves when correct data is given', function (done) {
-      this.timeout(0);
-      let prom = alex.train({user: 'test', inputs: [[1,1], [1,0], [0,1], [0,0]],
-        outputs: [[0], [1], [1], [0]]});
-      expect(prom).to.be.instanceOf(Promise);
-      prom.then(function (data) {
-        expect(data).to.have.property('validationData');
-      }, reject_bad).then(done, done);
-    });
-  });
-  describe('#score()', function () {
-    it('returns a promise', function (done) {
-      let prom = alex.score({});
-      expect(prom).to.be.instanceOf(Promise);
-      prom.catch(function (err) { err.message; });
-      done();
-    });
-    it('rejects if no user is specified', function (done) {
-      alex.score({inputs: []})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if no inputs are specified', function (done) {
-      alex.score({user: 'test'})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if user is not a string', function (done) {
-      alex.score({user: [], inputs: []})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if inputs are not an array', function (done) {
-      alex.score({user: 'test', inputs: 'data'})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if inputs is not an array of arrays', function (done) {
-      alex.score({user: 'test', inputs: ['test']})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if inputs are not in correct shape', function (done) {
-      alex.score({user: 'test', inputs: [[1]]})
-        .then(resolve_bad, reject).then(done, done);
-    });
-    it('rejects if inputs not only contains numbers at 2nd level',
-      function (done) {
-        alex.score({user: 'test', inputs: [['test', 'test']]})
-          .then(resolve_bad, reject).then(done, done);
-      });
-    it('resolves when correct data is given', function (done) {
-      let prom = alex.score({user: 'test',
-        inputs: [[1,1], [1,0], [0,1], [0,0]]});
-      expect(prom).to.be.instanceOf(Promise);
-      prom.then(function (data) {
-        expect(data).to.be.instanceOf(Float32Array);
-        expect(data.length).to.be.equal(4);
-        expect(data[0]).to.be.a('number');
-      }, reject_bad).then(done, done);
-    });
-  });
-});
-
-function resolve_bad () {
-  expect('test failed').to.be.equal('malformed request');
-}
-
-function reject_bad (err) {
-  expect(err.message).to.be.equal('No error message');
-}
-
-
-function reject (err) {
-  expect(err.message).to.be.equal('malformed request');
-}*/
