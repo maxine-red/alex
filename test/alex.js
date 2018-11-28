@@ -25,13 +25,6 @@ chai.use(chai_array);
 let expect = chai.expect;
 let alex = new Alex();
 
-/*
- * Functions of Alex:
- * - save actions (tag array, score pairs) in a Memory object
- * - use stored Memories to learn prefrences
- * - use learned preferences to score items
- */
-
 describe('Alex', function () {
   describe('new', function () {
     it('returns a new class instance object', function (done) {
@@ -39,17 +32,46 @@ describe('Alex', function () {
       expect(alex).to.be.instanceOf(Alex);
       done();
     });
+    it('has a \'memories\' property, that is an array', function (done) {
+      expect(alex).to.have.property('memories');
+      expect(alex.memories.length).to.be.equal(0);
+      done();
+    });
   });
   describe('#remember()', function () {
+    it('has a method #remember()', function (done) {
+      expect(alex).to.have.property('remember').and.be.a('function');
+      done();
+    });
+    it('appends a Memory to the memories property');
+    it('return true', function (done) {
+      expect(alex.remember()).to.be.true;
+      done();
+    });
+  });
+  describe('#materialize_memory()', function () {
+    it('returns a promise');
+    it('resolves when the current memory array is written to disk');
   });
   describe('#forget()', function () {
+    it('returns a promise');
+    it('rejects if the memory element can\'t be found');
+    it('resolves if the memory element was removed');
   });
   describe('#amnesia()', function () {
+    it('empties the entire memory and sets it to an empty array');
   });
   describe('#learn()', function () {
+    it('returns a promise');
+    it('resolves when learning is finished, with a history of the learning process');
   });
   describe('#predict()', function () {
+    it('accepts an environment state');
+    it('returns a promise');
+    it('resolves with a predicted action');
   });
   describe('#act()', function () {
+    it('accepts an environment state and a function to call');
+    it('calls the provided function with a predicted action');
   });
 });
