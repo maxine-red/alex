@@ -42,6 +42,10 @@ describe('Alex', function () {
   });
   describe('#remember()', function () {
   });
+  describe('#forget()', function () {
+  });
+  describe('#amnesia()', function () {
+  });
   describe('#learn()', function () {
   });
   describe('#predict()', function () {
