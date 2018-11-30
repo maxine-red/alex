@@ -20,6 +20,7 @@
 let chai = require('chai');
 let chai_array = require('chai-arrays');
 const Alex = require('../lib/alex');
+const Memory = require('../lib/memory');
 
 chai.use(chai_array);
 let expect = chai.expect;
@@ -43,23 +44,29 @@ describe('Alex', function () {
       expect(alex).to.have.property('remember').and.be.a('function');
       done();
     });
-    it('appends a Memory to the memories property');
-    it('return true', function (done) {
-      expect(alex.remember()).to.be.true;
+    it('return a memory object', function (done) {
+      expect(alex.remember([0,0], [0])).to.be.instanceOf(Memory);
+      done();
+    });
+    it('appends a Memory to the memories property', function (done) {
+      expect(alex.memories.length).to.be.equal(1);
+      done();
+    });
+  });
+  describe('#forget_all()', function () {
+    it('has a method #forget_all()', function (done) {
+      expect(alex).to.have.property('forget_all').and.be.a('function');
+      done();
+    });
+    it('empties the entire memory and sets it to an empty array', function (done) {
+      alex.forget_all();
+      expect(alex.memories.length).to.be.equal(0);
       done();
     });
   });
   describe('#materialize_memory()', function () {
     it('returns a promise');
     it('resolves when the current memory array is written to disk');
-  });
-  describe('#forget()', function () {
-    it('returns a promise');
-    it('rejects if the memory element can\'t be found');
-    it('resolves if the memory element was removed');
-  });
-  describe('#amnesia()', function () {
-    it('empties the entire memory and sets it to an empty array');
   });
   describe('#learn()', function () {
     it('returns a promise');
