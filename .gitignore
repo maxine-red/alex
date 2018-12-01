@@ -73,5 +73,4 @@ typings/
 .serverless
 
 # project specific ignores
-personalities/
-tmp/
+data/alex/

@@ -28,9 +28,8 @@ let memory = new Memory([0,0], [0]);
 
 describe('Memory', function () {
   describe('new', function () {
-    it('returns a new class instance object', function (done) {
-      expect(new Memory([0,0], [0])).to.be.instanceOf(Memory);
-      done();
+    it('returns a new class instance object', function () {
+      return expect(new Memory([0,0], [0])).to.be.instanceOf(Memory);
     });
     it('accepts an object instead of arrays', function (done) {
       expect(new Memory({state: [0,0], action: [0], created_at: 1540000000})).to.be.instanceOf(Memory);
@@ -43,21 +42,17 @@ describe('Memory', function () {
       expect(function () { new Memory({action: [0]}); }).to.throw(Error, 'memory objects require a state and action property');
       done();
     });
-    it('throws an error on undefined behavior', function (done) {
-      expect(function () { new Memory({state: [0,0], action: [0]}, [0]); }).to.throw(Error, 'unknown error');
-      done();
+    it('throws an error on undefined behavior', function () {
+      return expect(function () { new Memory({state: [0,0], action: [0]}, [0]); }).to.throw(Error, 'unknown error');
     });
-    it('throws an error if neither state nor action is given', function (done) {
-      expect(function () { new Memory(); }).to.throw(Error, 'no state or action provided');
-      done();
+    it('throws an error if neither state nor action is given', function () {
+      return expect(function () { new Memory(); }).to.throw(Error, 'no state or action provided');
     });
-    it('throws an error if an action is expected but not given', function (done) {
-      expect(function () { new Memory([0, 0] ); }).to.throw(Error, 'action expected, but not provided');
-      done();
+    it('throws an error if an action is expected but not given', function () {
+      return expect(function () { new Memory([0, 0] ); }).to.throw(Error, 'action expected, but not provided');
     });
-    it('has a \'created_at\' property, that is a UNIX timestamp', function (done) {
-      expect(memory).to.have.property('created_at').and.be.above(1540000000);
-      done();
+    it('has a \'created_at\' property, that is a UNIX timestamp', function () {
+      return expect(memory).to.have.property('created_at').and.be.above(1540000000);
     });
     it('has a \'state\' property, that is an array of numbers', function (done) {
       expect(memory).to.have.property('state');
@@ -69,21 +64,17 @@ describe('Memory', function () {
       expect(memory.action[0]).to.be.equal(0);
       done();
     });
-    it('throws an error if the state size is incorrect', function (done) {
-      expect(function () { new Memory([0], [0]); }).to.throw(Error, 'State size mismatch:');
-      done();
+    it('throws an error if the state size is incorrect', function () {
+      return expect(function () { new Memory([0], [0]); }).to.throw(Error, 'State size mismatch:');
     });
-    it('throws an error if the state is not only made up of numbers', function (done) {
-      expect(function () { new Memory([[0,0],[0,0]], [0]); }).to.throw(Error, 'numbers only');
-      done();
+    it('throws an error if the state is not only made up of numbers', function () {
+      return expect(function () { new Memory([[0,0],[0,0]], [0]); }).to.throw(Error, 'numbers only');
     });
-    it('throws an error if the action size is incorrect', function (done) {
-      expect(function () { new Memory([0, 0], [0,0]); }).to.throw(Error, 'Action size mismatch:');
-      done();
+    it('throws an error if the action size is incorrect', function () {
+      return expect(function () { new Memory([0, 0], [0,0]); }).to.throw(Error, 'Action size mismatch:');
     });
-    it('throws an error if the action is not only made up of numbers', function (done) {
-      expect(function () { new Memory([0, 0], [true]); }).to.throw(Error, 'numbers only');
-      done();
+    it('throws an error if the action is not only made up of numbers', function () {
+      return expect(function () { new Memory([0, 0], [true]); }).to.throw(Error, 'numbers only');
     });
   });
 });
