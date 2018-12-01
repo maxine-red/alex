@@ -65,8 +65,14 @@ describe('Alex', function () {
     });
   });
   describe('#materialize_memory()', function () {
-    it('returns a promise');
-    it('resolves when the current memory array is written to disk');
+    it('has a method #materialize_memory()', function (done) {
+      expect(alex).to.have.property('materialize_memory').and.be.a('function');
+      done();
+    });
+    it('returns true', function (done) {
+      expect(alex.materialize_memory()).to.be.true;
+      done();
+    });
   });
   describe('#learn()', function () {
     it('returns a promise');
