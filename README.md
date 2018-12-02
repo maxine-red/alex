@@ -13,21 +13,13 @@
 
 ## Description
 
-Alex is a server for artificial intelligence applications.
+Alex is a library for preference and reinforcement learning.
 
-The process is like the following:
-- Alex listens locally (as of 1.0.0 only UNIX sockets are supported with a
-  raw JSON communication protocol) for new requests to train or score
-- Those requests are processed asynchronously and results are returned
+As of version 0.3.0, code is still very open, but that should change for 1.0.
+The goal is to have a very reinforcement learning centered library, that allows
+easy construction and use of it.
 
 Documentation of code can be found here: [documentation](DOCUMENTATION.md).
-
-A word of caution though! That documentation refers to the development
-documentation. Internal function calls are not considered part of the public
-API.
-
-Only network communication is part of the public API and thus part of the
-stability promise, Semver offers.
 
 ## Versioning
 
@@ -45,93 +37,41 @@ configuration.
 
 A more thorough installation guide will be added later.
 
-As of 1.0.0, there is no global installation possible.
-
 ## Use
 
-As the public API is comprised of only JSON objects, exchanged over network
-communication, here are the objects:
+The API is centered around an `Alex` class. Other classes might be added later
+and will be outlined here, if they are part of the public API.
 
-```json
-{
-  "event": "train",
-  "data": {
-    "user": "<username>",
-    "inputs": "<two dimensional array that is comprised of input vector data>",
-    "outputs: "<two dimensional array that is comprised of desired outputs>"
-  }
-}
+All methods, not explicitely stated here, are counted not part of the public
+API.
+
+Public methods:
+
+```javascript
+let alex = new Alex();    // Constructor, which also handles model generation,
+                          // memory loading and other base functions
+
+alex.remember([0,0], [0]);// A method used to save enviroment state and action
+                          // pairs. These are important in later steps.
+
+alex.materialize_memory();// Save the current state of memory to disk, so it can
+                          // be loaded back later.
+
+alex.learn();             // Use current memory to train a network.
+                          // This method should always be run with a memory that
+                          // contains at least one element!
+
+alex.predict([[0,0]]);    // Make a prediction of what action to take, when an
+                          // environment state is given.
+
+alex.act([[0,0]], func);  // Same as predict, but accepts a function too, that
+                          // is run with the produced prediction
+
+alex.forget_all()         // Empty memory. So it can be filled with new memories
 ```
 
-To give a clearer example, here with a user 'test' and with training data for
-the XOR function.
-
-```json
-{
-  "event": "train",
-  "data": {
-    "user": "test",
-    "inputs": [[0,0], [0,1], [1,0], [1,1]],
-    "outputs: [[0], [1], [1], [0]]
-  }
-}
-```
-
-This will lead to a response in this format.
-```json
-{
-  "event": "train",
-  "data": {
-    "user": "<username>",
-    "message": "done"
-  }
-}
-```
-Where username is the name of the user, the training was done for.
-
-The other, currently available, object is:
-
-```json
-{
-  "event": "score",
-  "data": {
-    "user": "<username>",
-    "inputs": "<two dimensional array that is comprised of input vector data>"
-  }
-}
-```
-To pick up the example from above, it would look like this with actual data:
-```json
-{
-  "event": "score",
-  "data": {
-    "user": "test",
-    "inputs": [[0,0], [0,1], [1,0], [1,1]]
-  }
-}
-```
-
-The response will be an object with score data:
-```json
-{
-  "event": "score",
-  "data": {
-    "user": "<username>",
-    "scores": "<array of floating point numbers, exactly the same size as inputs>"
-  }
-}
-```
-
-Error messages are in the format of:
-
-```json
-{
-  "event": "error",
-  "data": {
-    "message": "<error message>"
-  }
-}
-```
+For more information, please refer to the more detailed
+[documentation](DOCUMENTATION.md).
 
 ## Donations
 
