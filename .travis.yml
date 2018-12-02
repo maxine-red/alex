@@ -1,13 +1,12 @@
 env:
   global:
-  - CC_TEST_REPORTER_ID=c81c22bdd1a67c37658487799f6a328ba8088e3c2c87999561217ad4b153b87f
+    - CC_TEST_REPORTER_ID=c81c22bdd1a67c37658487799f6a328ba8088e3c2c87999561217ad4b153b87f
 language: node_js
 node_js:
   - "node"
-  - "lts/*"
+  - "lts/8"
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-  > ./cc-test-reporter
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - "./cc-test-reporter before-build"
 after_script:
