@@ -1,9 +1,9 @@
-[![Build Status](https://img.shields.io/travis/maxine-red/al3x/master.svg)](https://travis-ci.org/maxine-red/al3x)
-[![David](https://img.shields.io/david/maxine-red/al3x.svg)](https://github.com/maxine-red/al3x/network/dependencies)
-
 # Alex: Artificial Life form 3X
 
 ![Alex](https://mootech.eu/images/alex.png)
+
+[![Build Status](https://img.shields.io/travis/maxine-red/al3x/master.svg)](https://travis-ci.org/maxine-red/al3x)
+[![David](https://img.shields.io/david/maxine-red/al3x.svg)](https://github.com/maxine-red/al3x/network/dependencies)
 
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/maxine-red/al3x.svg)](https://codeclimate.com/github/maxine-red/al3x/maintainability)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage/maxine-red/al3x.svg)](https://codeclimate.com/github/maxine-red/al3x/test_coverage)
