@@ -1,13 +1,13 @@
 {
   "name": "alex",
-  "version": "1.0.0",
+  "version": "0.3.0",
   "description": "Behavior based preference learning algorithm, based on pre-tagged images.",
   "main": "main.js",
   "scripts": {
     "start": "./bin/alex",
     "test": "export NODE_ENV=test; nyc --reporter=text-summary --reporter=lcov mocha --recursive",
     "lint": "eslint .",
-    "document": "documentation build bin/alex -f md > DOCUMENTATION.md"
+    "document": "documentation build lib/alex.js -f md > DOCUMENTATION.md"
   },
   "repository": {
     "type": "git",

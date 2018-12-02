@@ -3,281 +3,111 @@
 ### Table of Contents
 
 -   [Alex][1]
-    -   [personalities][2]
-    -   [train][3]
-        -   [Parameters][4]
-    -   [score][5]
-        -   [Parameters][6]
-    -   [validate_data][7]
+    -   [remember][2]
+        -   [Parameters][3]
+    -   [forget_all][4]
+    -   [materialize_memory][5]
+    -   [learn][6]
+    -   [predict][7]
         -   [Parameters][8]
--   [Personality][9]
-    -   [Parameters][10]
-    -   [train][11]
-        -   [Parameters][12]
-    -   [predict][13]
-        -   [Parameters][14]
-    -   [save][15]
-    -   [load_model][16]
-        -   [Parameters][17]
--   [System][18]
-    -   [hostname][19]
-    -   [working_directory][20]
-    -   [run_time][21]
-    -   [memory_use][22]
-    -   [relative_memory_use][23]
--   [on_connect][24]
-    -   [Parameters][25]
--   [on_error][26]
-    -   [Parameters][27]
--   [on_close][28]
--   [on_listen][29]
+    -   [act][9]
+        -   [Parameters][10]
 
 ## Alex
 
-Main class to combine all of Alex's parts.
+Main class to interact with Alex
 
 **Meta**
 
 -   **since**: 1.0.0
 -   **author**: Maxine Michalski
 
-### personalities
+### remember
 
-Looks for personalities, stored on disk.
-
-Returns **[Array][30]** Array of personality names, stored on disk
-
-### train
-
-Validates input data and calls a Personality to train with.
-
-#### Parameters
-
--   `data` **[Object][31]** inputs data
-
-Returns **[Promise][32]** to be resolved when training is done
-
-### score
-
-Uses user input data to score it, considering the chosen personality
+Remembers a state/action pair.
+Use this method to save state/action pairs, so later they can be used for
+learning.
+It is important to have a memory filled with pairs BEFORE starting to
+learn!
+This method also changes an internal variable and IS NOT thread safe.
 
 #### Parameters
 
--   `data` **[object][31]** user input data
+-   `state` **[Array][11]** A state of environement to remember
+-   `action` **[Array][11]** The corresponding action, taken inside that
+    environment.
 
-Returns **[Promise][32]** to be resolved with an array of float scores
+Returns **Memory** the appended memory object
 
-### validate_data
+### forget_all
 
-Validation method for input data.
-It's designed to bail out as soon as possible and to validate input data
-for use with neural networks.
+Empties the `memories` inernal variable and makes Alex forget everything.
+This literally removes all memories, permanently!
 
-#### Parameters
+Returns **[undefined][12]** 
 
--   `data` **[object][31]** user input data
--   `func` **[string][33]** function this method was invoked by
+### materialize_memory
 
-Returns **[Promise][32]** to be resolved if data is valid
+Saves memories to disk, so they can be loaded back in later.
+This file is fixed and will be loaded on every call to Alex's constructor.
+It also saves the current state, so if you made her forget, she saves an
+empty array.
 
-## Personality
+Returns **`true`** when no error occured.
 
-Class for Personalities.
+### learn
 
-### Parameters
+Learns from past memories.
+This method is the base for any learning and will run asynchronously.
 
--   `name` **[String][33]** name of this personality
--   `input_size` **[Number][34]** size for inputs, data needs to have exactly
-    this size
-
-**Meta**
-
--   **since**: 1.0.0
--   **author**: Maxine Michalski
-
-### train
-
-Train a neural network and save it onto disk.
-
-#### Parameters
-
--   `inputs` **[Array][30]** input vector data
--   `outputs` **[Array][30]** desired output vector data
-
-Returns **[Promise][32]** Promise to be resolved after training is done
-
-**Meta**
-
--   **author**: Maxine Michalski
+Returns **[Promise][13]** that will be resolved with a learning historu.
 
 ### predict
 
-Scoring function for a personality
+Takes in a(n array of) state(s) and returns a(n array of) prediction(s).
 
 #### Parameters
 
--   `inputs` **[Array][30]** input data
+-   `i_states` **[Array][11]** An array of states, to make predictions for.
 
-Returns **[Promise][32]** Promise to be resolved with score data
+Returns **[Promise][13]** to be resolved with predictions for every state.
 
-### save
+### act
 
-Saves current model to disk.
-
-Returns **[Promise][32]** Promise to be resolved after saving
-
-### load_model
-
-Helper method for model loading.
+Acts in the environment.
 
 #### Parameters
 
--   `model` **tf.Model** = Model loaded from file (hopefully with weights)
+-   `states` **[Array][11]** Array of states, to be fed into `predict()`
+-   `func` **[Function][14]** Function to be called with the result of
+    `predict()`
 
-Returns **[undefined][35]** 
-
-## System
-
-An abstraction of various system information.
-Attributes are gatehred on creation, while methods show live information.
-
-**Meta**
-
--   **since**: 1.0.0
--   **author**: Maxine michalski
-
-### hostname
-
-Fetch current hostname and return it.
-
-Returns **[String][33]** Current hostname
-
-### working_directory
-
-Return the working directory of this process.
-
-Returns **[String][33]** Current working directory
-
-### run_time
-
-Gather how long this process is running.
-
-Returns **[Number][34]** Number of seconds, this process is running
-
-### memory_use
-
-Returns memory used (allocated) by process.
-
-Returns **[Number][34]** Number of allocated memory, in MB
-
-### relative_memory_use
-
-Returns an objec with percentages of memory used, relative to max values.
-
-Returns **[Object][31]** Percentages of max memory values used.
-
-## on_connect
-
-Method that is invoked when a new client connects
-
-### Parameters
-
--   `conn` **net.Connection** Connection from socket
-
-Returns **[undefined][35]** 
-
-## on_error
-
-Error event handler
-
-### Parameters
-
--   `err` **[Error][36]** Error thrown
--   `conn` **net.Connection** Optional connection to send error message
-    through.
-
-Returns **[undefined][35]** 
-
-## on_close
-
-Event when server closes
-
-Returns **[undefined][35]** 
-
-## on_listen
-
-Event handler for server start
-
-Returns **[undefined][35]** 
+Returns **[undefined][12]** 
 
 [1]: #alex
 
-[2]: #personalities
+[2]: #remember
 
-[3]: #train
+[3]: #parameters
 
-[4]: #parameters
+[4]: #forget_all
 
-[5]: #score
+[5]: #materialize_memory
 
-[6]: #parameters-1
+[6]: #learn
 
-[7]: #validate_data
+[7]: #predict
 
-[8]: #parameters-2
+[8]: #parameters-1
 
-[9]: #personality
+[9]: #act
 
-[10]: #parameters-3
+[10]: #parameters-2
 
-[11]: #train-1
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[12]: #parameters-4
+[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[13]: #predict
+[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[14]: #parameters-5
-
-[15]: #save
-
-[16]: #load_model
-
-[17]: #parameters-6
-
-[18]: #system
-
-[19]: #hostname
-
-[20]: #working_directory
-
-[21]: #run_time
-
-[22]: #memory_use
-
-[23]: #relative_memory_use
-
-[24]: #on_connect
-
-[25]: #parameters-7
-
-[26]: #on_error
-
-[27]: #parameters-8
-
-[28]: #on_close
-
-[29]: #on_listen
-
-[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-
-[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
-[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
-[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
-
-[35]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
-
-[36]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
+[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

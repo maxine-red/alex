@@ -108,15 +108,20 @@ describe('Alex', function () {
     it('has a method #predict()', function () {
       return expect(alex).to.respondTo('predict');
     });
-    it('accepts an environment state');
-    it('returns a promise');
-    it('resolves with a predicted action');
+    it('accepts an environment state and resolves with a predicted action', function () {
+      return expect(alex.predict([[0, 0]])).to.be.eventually
+        .instanceOf(Float32Array);
+    });
   });
   describe('#act()', function () {
     it('has a method #act()', function () {
       return expect(alex).to.respondTo('act');
     });
-    it('accepts an environment state and a function to call');
-    it('calls the provided function with a predicted action');
+    it('accepts an environment state, a function to call and calls the function with a prediction', function (done) {
+      alex.act([[0, 0]], function (action) {
+        expect(action).to.be.instanceOf(Float32Array);
+        done();
+      });
+    });
   });
 });
