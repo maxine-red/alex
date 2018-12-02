@@ -2,14 +2,14 @@
 
 ![Alex](https://mootech.eu/images/alex.png)
 
-[![Build Status](https://travis-ci.org/maxine-red/alex.svg?branch=master)](https://travis-ci.org/maxine-red/alex)
-![David](https://img.shields.io/david/maxine-red/alex.svg)
+[![Build Status](https://travis-ci.org/maxine-red/al3x.svg?style=flat-square&branch=master)](https://travis-ci.org/maxine-red/al3x)
+![David](https://img.shields.io/david/maxine-red/al3x.svg?style=flat-square)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/812a922e1ba068d5ead9/maintainability)](https://codeclimate.com/github/maxine-red/alex/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/812a922e1ba068d5ead9/test_coverage)](https://codeclimate.com/github/maxine-red/alex/test_coverage)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/maxine-red/al3x.svg?style=flat-square)](https://codeclimate.com/github/maxine-red/al3x/maintainability)
+[![Test Coverage](https://img.shields.io/codeclimate/coverage/maxine-red/al3x.svg?style=flat-square)](https://codeclimate.com/github/maxine-red/al3x/test_coverage)
 
-![GitHub release](https://img.shields.io/github/release/maxine-red/alex.svg)
-![GitHub Release Date](https://img.shields.io/github/release-date/maxine-red/alex.svg)
+![GitHub release](https://img.shields.io/github/release/maxine-red/al3x.svg)
+![GitHub Release Date](https://img.shields.io/github/release-date/maxine-red/al3x.svg)
 
 ## Description
 

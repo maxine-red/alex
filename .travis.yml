@@ -1,17 +1,19 @@
 env:
   global:
-  - CC_TEST_REPORTER_ID=fbae3b6679e08ba4349d17a6cd3377d1d8b696aefc36888fb9fc81ba0881af56
+  - CC_TEST_REPORTER_ID=c81c22bdd1a67c37658487799f6a328ba8088e3c2c87999561217ad4b153b87f
 language: node_js
 node_js:
-- node
+  - "8"
 before_script:
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
   > ./cc-test-reporter
-- chmod +x ./cc-test-reporter
-- "./cc-test-reporter before-build"
+  - chmod +x ./cc-test-reporter
+  - "./cc-test-reporter before-build"
 after_script:
-- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 deploy:
+  provider: npm
+  email: "maxine@furfind.net"
   api_key:
     secure: cXi286aC0ehQNa2+fuZGUkRbZUnpDj0wvc+tI+OYwTU56Gr0Xn7dne3QAU1ncB95chSFIK/ekRHFkCdhFzNFMZ/YU/F3j1zMX29NaY0N6bbP0kLkUuEnzUEO6FE5qNJEKOEZ+W2WYhBBVftTicaBfMtJUO8zxO1ZGZpJnX9WXyc4HypJWIEPAkcqFE1Mu8ysEIBJsQ1IYodYvmJfH8NDRQf9zMe0tTcFJGmuyYeelRzoJF9Yt/rFtv4cWBSvckAjFHv3PwbaJG1XJiro7Pjdmq0erRHSQbjQm6i2+5qlXnSVu++2Ai++yTQzNZjyxGgX8ZyuDQlasluQBfkK0ayXv9We6JPZLvuHJuUJTt37hvp2AQ+ubhW15y1yGJwpzsHmy+65zsFcQ2IpTqjz0lPU9MzKAVbRQZHZR72fk3Gb2yKH9ISJHnH2TnN280B8ZsfL/ob9jCyrskGL+cXVeoKBZr38+S41/HDFt6dRlpe5r82w5YSxh7nMD5k5x1gbmvbeMqad8hTuPSEK2dqVac+lpufaXAl36709sfPjJNjCBpnFpNE3jh3tO6hRokpg4/2QdWlpHs3Kdm41mBDPeg07ZIl+8D9xToYxJU1e5lNMn9cVmdX9gGlZ3dlMeRG2vynHzg21Jiia1mzGyCKk2mS2vVecc7Jg0NFC2dyN6HauIUg=
   on:
