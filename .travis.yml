@@ -3,7 +3,8 @@ env:
   - CC_TEST_REPORTER_ID=c81c22bdd1a67c37658487799f6a328ba8088e3c2c87999561217ad4b153b87f
 language: node_js
 node_js:
-  - "8"
+  - "node"
+  - "lts/*"
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
   > ./cc-test-reporter
