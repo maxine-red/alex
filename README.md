@@ -5,10 +5,13 @@
 
 ![Alex](https://mootech.eu/images/alex.png)
 
-![David](https://img.shields.io/david/maxine-red/al3x.svg?style=flat-square)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/maxine-red/al3x.svg?style=flat-square)](https://codeclimate.com/github/maxine-red/al3x/maintainability)[![Test Coverage](https://img.shields.io/codeclimate/coverage/maxine-red/al3x.svg?style=flat-square)](https://codeclimate.com/github/maxine-red/al3x/test_coverage)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/maxine-red/al3x.svg)](https://codeclimate.com/github/maxine-red/al3x/maintainability)
+[![Test Coverage](https://img.shields.io/codeclimate/coverage/maxine-red/al3x.svg)](https://codeclimate.com/github/maxine-red/al3x/test_coverage)
 
-[![GitHub release](https://img.shields.io/github/release/maxine-red/al3x.svg&style=flat-square)](https://github.com/maxine-red/al3x/releases)[![GitHub Release Date](https://img.shields.io/github/release-date/maxine-red/al3x.svg?style=flat-square)](https://github.com/maxine-red/al3x/releases)![GitHub last commit](https://img.shields.io/github/last-commit/maxine-red/al3x.svg?style=flat-square)[![npm](https://img.shields.io/npm/v/al3x.svg?style=flat-square)](https://www.npmjs.com/package/al3x)
+[![GitHub release](https://img.shields.io/github/release/maxine-red/al3x.svg)](https://github.com/maxine-red/al3x/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/maxine-red/al3x.svg)](https://github.com/maxine-red/al3x/releases)
+![GitHub last commit](https://img.shields.io/github/last-commit/maxine-red/al3x.svg)
+[![npm](https://img.shields.io/npm/v/al3x.svg)](https://www.npmjs.com/package/al3x)
 
 ## Description
 
