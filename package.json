@@ -1,6 +1,6 @@
 {
   "name": "al3x",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Behavior based preference learning algorithm, based on pre-tagged images.",
   "main": "lib/alex.js",
   "scripts": {
@@ -10,21 +10,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maxine-red/alex.git"
+    "url": "https://github.com/maxine-red/al3x.git"
   },
   "keywords": [
     "machine_learning",
     "preference_learning",
+    "reinforcement_learning",
     "ai"
   ],
+  "homepage": "https://github.com/maxine-red/al3x",
+  "bugs": {
+    "url": "https://github.com/maxine-red/al3x/issues"
+  },
   "author": "Maxine Michalski",
   "license": "GPL-3.0-or-later",
+  "engine": {
+    "node": ">= 8.0.0"
+  },
   "dependencies": {
     "@tensorflow/tfjs-node": "^0.1.18",
-    "config": "^2.0.1",
-    "jayson": "^2.1.0",
-    "userid": "^0.3.1",
-    "winston": "^3.1.0"
+    "config": "^2.0.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
