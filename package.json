@@ -1,6 +1,6 @@
 {
   "name": "al3x",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Behavior based preference learning algorithm, based on pre-tagged images.",
   "main": "lib/alex.js",
   "scripts": {
