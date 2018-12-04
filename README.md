@@ -30,14 +30,16 @@ Alex is versioned following Semver 2.0.0
 
 ## Installation
 
-Clone this repository and go into the created directory.
+just run `$ npm i al3x`, which will install the package into your project.
 
-Just run ` $ NODE_ENV=production npm install` or `npm install --production`
+This library runs out of the box, but will give warnings. These warnings just
+show that no configuration was created.
 
-Don't forget to create a `production.js` in config/ if you need special
-configuration.
+It will run without, but it is highly suggested to create a custom network
+layout.
 
-A more thorough installation guide will be added later.
+If you want to see how a configuration file has to look, please look at the
+[default configuration](https://github.com/maxine-red/al3x/blob/master/config/default.json)
 
 ## Use
 
