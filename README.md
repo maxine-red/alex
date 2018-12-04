@@ -5,8 +5,8 @@
 [![Build Status](https://img.shields.io/travis/maxine-red/al3x/master.svg)](https://travis-ci.org/maxine-red/al3x)
 [![David](https://img.shields.io/david/maxine-red/al3x.svg)](https://github.com/maxine-red/al3x/network/dependencies)
 
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/maxine-red/al3x.svg)](https://codeclimate.com/github/maxine-red/al3x/maintainability)
-[![Test Coverage](https://img.shields.io/codeclimate/coverage/maxine-red/al3x.svg)](https://codeclimate.com/github/maxine-red/al3x/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/e6b43e961633ac010496/maintainability)](https://codeclimate.com/github/maxine-red/al3x/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e6b43e961633ac010496/test_coverage)](https://codeclimate.com/github/maxine-red/al3x/test_coverage)
 
 [![GitHub release](https://img.shields.io/github/release/maxine-red/al3x.svg)](https://github.com/maxine-red/al3x/releases)
 [![GitHub Release Date](https://img.shields.io/github/release-date/maxine-red/al3x.svg)](https://github.com/maxine-red/al3x/releases)
