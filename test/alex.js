@@ -35,32 +35,34 @@ describe('Alex', function () {
     it('returns a new class instance object', function () {
       return expect(new Alex()).to.be.instanceOf(Alex);
     });
-    // All exposed properties are not meant to be accessed directly and are not
-    // part of the public API
+    it('has a \'alpha\' property, that is a number');
+    it('has a \'gamma\' property, that is a number');
+    it('has a \'epsilon\' property, that is an object');
+    it('has a \'learning_method\' property, that is a string');
+    // All exposed properties below are not meant to be accessed directly
+    // and are not part of the public API
     it('has a \'memories\' property, that is an array', function () {
       return expect(alex).to.have.property('memories').and.to.be.array()
         .and.to.be.ofSize(0);
     });
+    it('has a \'config\' property, that is an object');
+    it('has a \'network\' property, that is an object');
     it('has a \'model\' property, that is a Sequential', function () {
       return expect(alex).to.have.property('model').and.be.instanceOf(tf.Sequential);
     });
-    it('has a \'file\' property that is a string', function () {
-      return expect(alex).to.have.property('file').and.be.a('string');
-    });
-    it('creates a network if none is on file', function (done) {
-      if (fs.existsSync(`${alex.file}/model.json`)) {
-        fs.unlinkSync(`${alex.file}/model.json`);
-      }
-      if (fs.existsSync(`${alex.file}/weights.bin`)) {
-        fs.unlinkSync(`${alex.file}/weights.bin`);
-      }
-      expect(new Alex()).to.be.instanceOf(Alex);
-      alex.model.save(`file://${alex.file}`);
-      done();
-    });
-    it('loads a network from file, if it exists', function () {
-      return expect(new Alex()).to.be.instanceOf(Alex);
-    });
+    it('creates a network');
+  });
+  describe('#load_model()', function () {
+    it('has a method #load_model()');
+  });
+  describe('#save_model()', function () {
+    it('has a method #save_model()');
+  });
+  describe('#load_memories()', function () {
+    it('has a method #load_memories()');
+  });
+  describe('#save_memories()', function () {
+    it('has a method #save_memories()');
   });
   describe('#remember()', function () {
     it('has a method #remember()', function () {
@@ -73,22 +75,11 @@ describe('Alex', function () {
       return expect(alex.memories).to.be.array().and.to.be.ofSize(1);
     });
   });
-  describe('#forget_all()', function () {
-    it('has a method #forget_all()', function () {
-      return expect(alex).to.respondTo('forget_all');
+  describe('#amnesia()', function () {
+    it('has a method #amnesia()', function () {
+      return expect(alex).to.respondTo('amnesia');
     });
-    it('empties the entire memory and sets it to an empty array', function () {
-      alex.forget_all();
-      return expect(alex.memories).to.be.ofSize(0);
-    });
-  });
-  describe('#materialize_memory()', function () {
-    it('has a method #materialize_memory()', function () {
-      return expect(alex).to.respondTo('materialize_memory');
-    });
-    it('returns true', function () {
-      return expect(alex.materialize_memory()).to.be.true;
-    });
+    it('resets memories and learning progress completely');
   });
   describe('#learn()', function () {
     it('has a method #learn()', function () {
