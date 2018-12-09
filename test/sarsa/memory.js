@@ -19,11 +19,17 @@
 
 let chai = require('chai');
 let chai_array = require('chai-arrays');
-//const ACKTR = require('../lib/acktr');
+//const Memory = require('../lib/memory');
 
 chai.use(chai_array);
 let expect = chai.expect;
+//let memory = new Memory([0,0], [0]);
 
 
-describe('ACKTR', function () {
+describe('Memory', function () {
+  describe('new', function () {
+    it('returns a new class instance object');
+    it('accepts an object instead of arrays');
+    it('throws an error on undefined behavior');
+  });
 });

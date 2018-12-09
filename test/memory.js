@@ -25,6 +25,11 @@ chai.use(chai_array);
 let expect = chai.expect;
 let memory = new Memory([0,0], [0]);
 
+// This should become an abstract like class to derive other, more special,
+// memory classes from.
+
+// TODO: Don't forget to add another descriptor to what model type a memory type
+// blongs to. (in the memory test files)
 
 describe('Memory', function () {
   describe('new', function () {

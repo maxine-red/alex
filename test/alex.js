@@ -30,6 +30,9 @@ chai.use(chai_promises);
 let expect = chai.expect;
 let alex = new Alex();
 
+// TODO: Make a learning config option, that determines what training model and
+// memory setup to use.
+
 describe('Alex', function () {
   describe('new', function () {
     it('returns a new class instance object', function () {
@@ -38,10 +41,10 @@ describe('Alex', function () {
     it('has a \'alpha\' property, that is a number');
     it('has a \'gamma\' property, that is a number');
     it('has a \'epsilon\' property, that is an object');
-    it('has a \'model\' property, that is a Model');
-    it('has a \'memories\' property, that is a Memories');
     // All exposed properties below are not meant to be accessed directly
     // and are not part of the public API
+    it('has a \'model\' property, that is a Model object');
+    it('has a \'memories\' property, that is a Memories object');
     it('has a \'config\' property, that is an object');
   });
   describe('#remember()', function () {

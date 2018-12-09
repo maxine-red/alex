@@ -19,11 +19,17 @@
 
 let chai = require('chai');
 let chai_array = require('chai-arrays');
-//const A3C = require('../lib/a3c');
+//const Memory = require('../lib/memory');
 
 chai.use(chai_array);
 let expect = chai.expect;
+//let memory = new Memory([0,0], [0]);
 
 
-describe('A3C', function () {
+describe('Memory', function () {
+  describe('new', function () {
+    it('returns a new class instance object');
+    it('accepts an object instead of arrays');
+    it('throws an error on undefined behavior');
+  });
 });
