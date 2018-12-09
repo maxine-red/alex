@@ -32,6 +32,9 @@ let alex = new Alex();
 
 // TODO: Make a learning config option, that determines what training model and
 // memory setup to use.
+//
+// TODO: Another idea is to create different classes, that have different entry
+// points (as in different load ins)
 
 describe('Alex', function () {
   describe('new', function () {
