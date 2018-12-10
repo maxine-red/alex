@@ -41,8 +41,8 @@ describe('Memories', function () {
         'object must be Memory');
     });
     it('pushes a memory into the memories array', function (done) {
-      memories.unshift(new Memory([0, 0], [0]));
-      expect(memories[0].action[0]).to.be.equal(0);
+      memories.unshift(new Memory({state: [0, 0], action: 0}));
+      expect(memories[0].action).to.be.equal(0);
       done();
     });
   });
@@ -55,8 +55,8 @@ describe('Memories', function () {
         'object must be Memory');
     });
     it('shifts a memory into the memories array', function (done) {
-      memories.unshift(new Memory([0, 1], [1]));
-      expect(memories[0].action[0]).to.be.equal(1);
+      memories.unshift(new Memory({state: [0, 1], action: 1}));
+      expect(memories[0].action).to.be.equal(1);
       done();
     });
   });
@@ -73,7 +73,6 @@ describe('Memories', function () {
       return expect(Memories).itself.to.respondTo('load');
     });
     it('accepts a path and loads memories from that location', function () {
-      console.log(Memories.load('data/memories.json'));
       return expect(Memories.load('data/memories.json')).to.be.instanceOf(Memories);
     });
   });
