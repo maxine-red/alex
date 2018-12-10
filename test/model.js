@@ -19,12 +19,41 @@
 
 let chai = require('chai');
 let chai_array = require('chai-arrays');
-//const Model = require('../lib/model');
+const Model = require('../lib/model');
+const tf = require('@tensorflow/tfjs');
 
 chai.use(chai_array);
 let expect = chai.expect;
-
+let model = new Model(tf.sequential());
 
 describe('Model', function () {
+  describe('new', function () {
+    it('returns a new class instance object', function () {
+      return expect(new Model()).to.be.instanceOf(Model);
+    });
+    it('has a \'model\' parameter, that is a Sequential object', function () {
+      return expect(model).to.have.property('model').and.be.instanceOf(tf.Sequential);
+    });
+  });
+  describe('#save()', function () {
+    it('has a method #save()', function () {
+      return expect(model).to.respondTo('save');
+    });
+    it('saves a model to a path');
+  });
+  describe('.load()', function () {
+    it('has a method .load()', function () {
+      return expect(Model).itself.to.respondTo('load');
+    });
+    it('loads a model from a path');
+  });
+  describe('#train()', function () {
+    it('has a method #train()');
+    it('accepts training data and returns a promise, that resolves in a history object');
+  });
+  describe('#run()', function () {
+    it('has a method #run()');
+    it('accepts state data and returns a promise, that resolves into an action');
+  });
 });
 

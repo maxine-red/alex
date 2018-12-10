@@ -30,20 +30,14 @@ chai.use(chai_promises);
 let expect = chai.expect;
 let alex = new Alex();
 
-// TODO: Make a learning config option, that determines what training model and
-// memory setup to use.
-//
-// TODO: Another idea is to create different classes, that have different entry
-// points (as in different load ins)
-
 describe('Alex', function () {
   describe('new', function () {
-    it('returns a new class instance object', function () {
+    it('returns a new class instance object'/*, function () {
       return expect(new Alex()).to.be.instanceOf(Alex);
-    });
-    it('has a \'alpha\' property, that is a number');
-    it('has a \'gamma\' property, that is a number');
-    it('has a \'epsilon\' property, that is an object');
+    }*/);
+    //it('has a \'alpha\' property, that is a number');
+    //it('has a \'gamma\' property, that is a number');
+    //it('has a \'epsilon\' property, that is an object');
     // All exposed properties below are not meant to be accessed directly
     // and are not part of the public API
     it('has a \'model\' property, that is a Model object');
@@ -51,9 +45,9 @@ describe('Alex', function () {
     it('has a \'config\' property, that is an object');
   });
   describe('#remember()', function () {
-    it('has a method #remember()', function () {
+    it('has a method #remember()'/*, function () {
       return expect(alex).to.respondTo('remember');
-    });
+    }*/);
     it('return a memory object'/*, function () {
       return expect(alex.remember([0,0], [0])).to.be.instanceOf(Memory);
     }*/);
@@ -62,15 +56,11 @@ describe('Alex', function () {
     }*/);
   });
   describe('#amnesia()', function () {
-    it('has a method #amnesia()', function () {
-      return expect(alex).to.respondTo('amnesia');
-    });
+    it('has a method #amnesia()');
     it('resets memories and learning progress completely');
   });
   describe('#learn()', function () {
-    it('has a method #learn()', function () {
-      return expect(alex).to.respondTo('learn');
-    });
+    it('has a method #learn()');
     it('resolves when learning is finished, with a history of the learning process');
   });
   describe('#predict()', function () {

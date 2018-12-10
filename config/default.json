@@ -1,7 +1,7 @@
 {
-  "epsilon": 0.4,
-  "alpha": 0.1,
-  "gamma": 0.7,
+  "model": {
+    "type": "irl"
+  },
   "network": {
     "layers": [
       { "units": 64, "activation": "tanh", "inputShape": [1024]},
