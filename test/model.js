@@ -20,20 +20,19 @@
 let chai = require('chai');
 let chai_array = require('chai-arrays');
 const Model = require('../lib/model');
-const tf = require('@tensorflow/tfjs');
 
 chai.use(chai_array);
 let expect = chai.expect;
-let model = new Model(tf.sequential());
+let model = new Model();
 
 describe('Model', function () {
   describe('new', function () {
     it('returns a new class instance object', function () {
       return expect(new Model()).to.be.instanceOf(Model);
     });
-    it('has a \'model\' parameter, that is a Sequential object', function () {
+    /*it('has a \'model\' parameter, that is a Sequential object', function () {
       return expect(model).to.have.property('model').and.be.instanceOf(tf.Sequential);
-    });
+    });*/
   });
   describe('#save()', function () {
     it('has a method #save()', function () {

@@ -22,7 +22,6 @@ let chai_array = require('chai-arrays');
 let chai_promises = require('chai-as-promised');
 const Alex = require('../lib/alex');
 const Memory = require('../lib/memory');
-const tf = require('@tensorflow/tfjs');
 const fs = require('fs');
 
 chai.use(chai_array);
