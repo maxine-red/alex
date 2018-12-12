@@ -37,7 +37,7 @@ describe('Memories', function () {
       return expect(memories).to.respondTo('push');
     });
     it('throws an error if the element isn\'t a memory object', function () {
-      return expect(function () { memories.push(1) }).to.throw(Error,
+      return expect(function () { memories.push(1); }).to.throw(Error,
         'object must be Memory');
     });
     it('pushes a memory into the memories array', function (done) {
@@ -51,7 +51,7 @@ describe('Memories', function () {
       return expect(memories).to.respondTo('unshift');
     });
     it('throws an error if the element isn\'t a memory object', function () {
-      return expect(function () { memories.unshift(1) }).to.throw(Error,
+      return expect(function () { memories.unshift(1); }).to.throw(Error,
         'object must be Memory');
     });
     it('shifts a memory into the memories array', function (done) {
