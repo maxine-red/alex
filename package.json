@@ -28,7 +28,6 @@
     "node": ">= 8.0.0"
   },
   "dependencies": {
-    "@tensorflow/tfjs-node": "^0.1.21",
     "config": "^3.0.0"
   },
   "devDependencies": {
