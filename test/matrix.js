@@ -92,6 +92,34 @@ describe('Matrix', function () {
       expect(matrix.column(4)[3]).to.be.a('number').and.be.equal(5);
     });
   });
+  describe('#mul()', function () {
+    it('has a method #mul()', function () {
+      expect(matrix).to.respondTo('mul');
+    });
+    it('returns a promise with a new Matrix as a result', function () {
+      return expect(matrix.mul(new Matrix(6, 5)))
+        .to.be.eventually.instanceOf(Matrix);
+    });
+    it('rejects with an error if dimensions don\'t fit', function () {
+      return expect(matrix.mul(new Matrix(5, 6)))
+        .to.be.rejectedWith(Error, 'dimensions misalinged');
+    });
+    it('multiplies two matrices together', function () {
+      let m2 = new Matrix(6, 5);
+      m2.randomize(0, 0.01);
+      let e = 0;
+      for (let c = 0; c <= matrix.column(0).length; c++) {
+        e += matrix.row(0)[c] * m2.column(0)[c];
+      }
+      return expect(matrix.mul(m2)
+        .then(function (m3) { return m3.get(0,0) })).to.be.eventually.equal(e);
+    });
+    it('multiplies a matrix and a scalar together', function () {
+      return expect(matrix.mul(2)
+        .then(function (m3) { return m3.get(0,0) }))
+        .to.be.eventually.equal(matrix.get(0,0) * 2);
+    });
+  });
   /*describe('#save()', function () {
     it('has a method #save()', function () {
       expect(matrix).to.respondTo('save');
