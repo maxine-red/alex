@@ -17,7 +17,7 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-let chai = require('chai');
+/*let chai = require('chai');
 let chai_array = require('chai-arrays');
 const Model = require('../lib/model');
 
@@ -32,7 +32,7 @@ describe('Model', function () {
     });
     /*it('has a \'model\' parameter, that is a Sequential object', function () {
       return expect(model).to.have.property('model').and.be.instanceOf(tf.Sequential);
-    });*/
+    });/
   });
   describe('#save()', function () {
     it('has a method #save()', function () {
@@ -55,4 +55,4 @@ describe('Model', function () {
     it('accepts state data and returns a promise, that resolves into an action');
   });
 });
-
+*/

@@ -17,7 +17,7 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-let chai = require('chai');
+/*let chai = require('chai');
 let chai_array = require('chai-arrays');
 let chai_promises = require('chai-as-promised');
 const Alex = require('../lib/alex');
@@ -33,7 +33,7 @@ describe('Alex', function () {
   describe('new', function () {
     it('returns a new class instance object'/*, function () {
       return expect(new Alex()).to.be.instanceOf(Alex);
-    }*/);
+    }/);
     //it('has a \'alpha\' property, that is a number');
     //it('has a \'gamma\' property, that is a number');
     //it('has a \'epsilon\' property, that is an object');
@@ -46,13 +46,13 @@ describe('Alex', function () {
   describe('#remember()', function () {
     it('has a method #remember()'/*, function () {
       return expect(alex).to.respondTo('remember');
-    }*/);
+    }/);
     it('return a memory object'/*, function () {
       return expect(alex.remember([0,0], [0])).to.be.instanceOf(Memory);
-    }*/);
+    }/);
     it('appends a Memory to the memories property'/*, function () {
       return expect(alex.memories).to.be.array().and.to.be.ofSize(1);
-    }*/);
+    }/);
   });
   describe('#amnesia()', function () {
     it('has a method #amnesia()');
@@ -70,4 +70,4 @@ describe('Alex', function () {
     it('has a method #act()');
     it('accepts an environment state, a function to call and calls the function with a prediction');
   });
-});
+});*/

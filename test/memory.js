@@ -17,7 +17,7 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-let chai = require('chai');
+/*let chai = require('chai');
 let chai_array = require('chai-arrays');
 const Memory = require('../lib/memory');
 
@@ -76,4 +76,4 @@ describe('Memory', function () {
       return expect(function () { new Memory({ state: [0, 0], action: true}); }).to.throw(Error, 'must be a number');
     });
   });
-});
+});*/
