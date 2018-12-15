@@ -19,14 +19,14 @@
 
 let chai = require('chai');
 let chai_array = require('chai-arrays');
-let chai_promises = require('chai-as-promised');
 const Matrix = require('../lib/matrix');
 
 chai.use(chai_array);
-chai.use(chai_promises);
 let expect = chai.expect;
 
 let matrix = new Matrix(5, 6);
+
+// Make all methods synchronous for now. No promises at the moment!
 
 describe('Matrix', function () {
   describe('new', function () {
@@ -43,6 +43,10 @@ describe('Matrix', function () {
     });
     it('has a \'content\' property, that is a Float64Array objec', function () {
       expect(matrix).to.have.property('content')
+        .and.be.instanceOf(Float64Array);
+    });
+    it('has a \'deltas\' property, that is a Float64Array objec', function () {
+      expect(matrix).to.have.property('deltas')
         .and.be.instanceOf(Float64Array);
     });
   });
@@ -96,13 +100,9 @@ describe('Matrix', function () {
     it('has a method #mul()', function () {
       expect(matrix).to.respondTo('mul');
     });
-    it('returns a promise with a new Matrix as a result', function () {
-      return expect(matrix.mul(new Matrix(6, 5)))
-        .to.be.eventually.instanceOf(Matrix);
-    });
-    it('rejects with an error if dimensions don\'t fit', function () {
-      return expect(matrix.mul(new Matrix(5, 6)))
-        .to.be.rejectedWith(Error, 'dimensions misalinged');
+    it('throws an error if dimensions don\'t fit', function () {
+      expect(function () { matrix.mul(new Matrix(5, 6)) })
+        .to.be.throw(Error, 'dimensions misalinged');
     });
     it('multiplies two matrices together', function () {
       let m2 = new Matrix(6, 5);
@@ -111,33 +111,30 @@ describe('Matrix', function () {
       for (let c = 0; c <= matrix.column(0).length; c++) {
         e += matrix.row(0)[c] * m2.column(0)[c];
       }
-      return expect(matrix.mul(m2)
-        .then(function (m3) { return m3.get(0,0) })).to.be.eventually.equal(e);
+      expect(matrix.mul(m2).get(0,0)).to.be.equal(e);
     });
     it('multiplies a matrix and a scalar together', function () {
-      return expect(matrix.mul(2)
-        .then(function (m3) { return m3.get(0,0) }))
-        .to.be.eventually.equal(matrix.get(0,0) * 2);
+      expect(matrix.mul(2).get(0,0)).to.be.equal(matrix.get(0,0) * 2);
+    });
+  });
+  describe('#back_mul()', function () {
+    it('has a method #back_mul()', function () {
+      expect(matrix).to.respondTo('back_mul');
     });
   });
   describe('#add()', function () {
     it('has a method #add()', function () {
       expect(matrix).to.respondTo('add');
     });
-    it('returns a promise with a new Matrix as a result', function () {
-      return expect(matrix.add(new Matrix(5, 6)))
-        .to.be.eventually.instanceOf(Matrix);
-    });
-    it('rejects with an error if dimensions don\'t fit', function () {
-      return expect(matrix.add(new Matrix(6, 5)))
-        .to.be.rejectedWith(Error, 'dimensions don\'t fit');
+    it('throws an error if dimensions don\'t fit', function () {
+      expect(function () { matrix.add(new Matrix(6, 5)) })
+        .to.throw(Error, 'dimensions don\'t fit');
     });
     it('adds two matrices together', function () {
       let m2 = new Matrix(5, 6);
       m2.randomize(0, 0.01);
       let e = matrix.get(0,0) + m2.get(0,0);
-      return expect(matrix.add(m2)
-        .then(function (m3) { return m3.get(0,0) })).to.be.eventually.equal(e);
+      expect(matrix.add(m2).get(0,0)).to.be.equal(e);
     });
   });
   describe('#save()', function () {
