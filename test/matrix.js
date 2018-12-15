@@ -23,10 +23,9 @@ const Matrix = require('../lib/matrix');
 
 chai.use(chai_array);
 let expect = chai.expect;
-
-let matrix = new Matrix(5, 6);
-
-// Make all methods synchronous for now. No promises at the moment!
+let r = 9;
+let c = 12;
+let matrix = new Matrix(r, c);
 
 describe('Matrix', function () {
   describe('new', function () {
@@ -35,19 +34,21 @@ describe('Matrix', function () {
     });
     it('has a \'rows\' property, that is a number', function () {
       expect(matrix).to.have.property('rows')
-        .and.be.a('number').and.be.equal(5);
+        .and.be.a('number').and.be.equal(r);
     });
     it('has a \'columns\' property, that is a number', function () {
       expect(matrix).to.have.property('columns').and.be.a('number')
-        .and.be.equal(6);
+        .and.be.equal(c);
     });
     it('has a \'content\' property, that is a Float64Array objec', function () {
       expect(matrix).to.have.property('content')
         .and.be.instanceOf(Float64Array);
     });
     it('has a \'deltas\' property, that is a Float64Array objec', function () {
-      expect(matrix).to.have.property('deltas')
-        .and.be.instanceOf(Float64Array);
+      expect(matrix).to.have.property('deltas').and.be.instanceOf(Float64Array);
+    });
+    it('has a \'backprop\' property, that is an array objec', function () {
+      expect(matrix).to.have.property('backprop').and.be.array();
     });
   });
   describe('#randomize()', function () {
@@ -101,25 +102,28 @@ describe('Matrix', function () {
       expect(matrix).to.respondTo('mul');
     });
     it('throws an error if dimensions don\'t fit', function () {
-      expect(function () { matrix.mul(new Matrix(5, 6)) })
+      expect(function () { matrix.mul(new Matrix(r, c)) })
         .to.be.throw(Error, 'dimensions misalinged');
     });
     it('multiplies two matrices together', function () {
-      let m2 = new Matrix(6, 5);
-      m2.randomize(0, 0.01);
-      let e = 0;
-      for (let c = 0; c <= matrix.column(0).length; c++) {
-        e += matrix.row(0)[c] * m2.column(0)[c];
+      let m2 = new Matrix(c, r);
+      let o = 0;
+      for (let i = 0; i < r; i++) {
+        for (let j = 0; j < c; j++) {
+          matrix.set(i, j, ++o);
+        }
       }
-      expect(matrix.mul(m2).get(0,0)).to.be.equal(e);
+      o = 0;
+      for (let i = 0; i < c; i++) {
+        for (let j = 0; j < r; j++) {
+          m2.set(i, j, ++o);
+        }
+      }
+      expect(matrix.mul(m2).get(0,0)).to.be.equal(5226);
     });
     it('multiplies a matrix and a scalar together', function () {
-      expect(matrix.mul(2).get(0,0)).to.be.equal(matrix.get(0,0) * 2);
-    });
-  });
-  describe('#back_mul()', function () {
-    it('has a method #back_mul()', function () {
-      expect(matrix).to.respondTo('back_mul');
+      matrix.content.fill(1);
+      expect(matrix.mul(2).get(0,0)).to.be.equal(2);
     });
   });
   describe('#add()', function () {
@@ -127,14 +131,21 @@ describe('Matrix', function () {
       expect(matrix).to.respondTo('add');
     });
     it('throws an error if dimensions don\'t fit', function () {
-      expect(function () { matrix.add(new Matrix(6, 5)) })
+      expect(function () { matrix.add(new Matrix(c, r)) })
         .to.throw(Error, 'dimensions don\'t fit');
     });
     it('adds two matrices together', function () {
-      let m2 = new Matrix(5, 6);
-      m2.randomize(0, 0.01);
-      let e = matrix.get(0,0) + m2.get(0,0);
-      expect(matrix.add(m2).get(0,0)).to.be.equal(e);
+      let m2 = new Matrix(r, c);
+      m2.content.fill(1);
+      expect(matrix.add(m2).get(0,0)).to.be.equal(2);
+    });
+  });
+  describe('#tanh', function () {
+    it('has a method #tanh', function () {
+      expect(matrix).to.have.property('tanh');
+    });
+    it('applies the tanh function to all elements', function () {
+      expect(matrix.tanh.get(0, 0)).and.be.equal(Math.tanh(1));
     });
   });
   describe('#save()', function () {
@@ -143,8 +154,8 @@ describe('Matrix', function () {
     });
     it('returns a JSON representation of the current matrix', function () {
       expect(matrix.save()).to.be.a('object').and.have.property('rows')
-        .and.be.equal(5);
-      expect(matrix.save()).to.have.property('columns').and.be.equal(6);
+        .and.be.equal(r);
+      expect(matrix.save()).to.have.property('columns').and.be.equal(c);
       expect(matrix.save()).to.have.property('content')
         .and.be.containingAllOf(matrix.content);
     });
@@ -156,8 +167,8 @@ describe('Matrix', function () {
     it('returns a Matrix object', function () {
       let l = Matrix.load(JSON.parse(JSON.stringify(matrix.save())));
       expect(l).to.be.instanceOf(Matrix);
-      expect(l).to.have.property('rows').and.be.equal(5);
-      expect(l).to.have.property('columns').and.be.equal(6);
+      expect(l).to.have.property('rows').and.be.equal(r);
+      expect(l).to.have.property('columns').and.be.equal(c);
       // no better comparison possible
       expect(l).to.have.property('content').and.containing(matrix.content[0]);
     });
@@ -170,30 +181,10 @@ describe('Matrix', function () {
       let l = matrix.copy();
       expect(l).to.not.be.equal(matrix);
       expect(l).to.be.instanceOf(Matrix);
-      expect(l).to.have.property('rows').and.be.equal(5);
-      expect(l).to.have.property('columns').and.be.equal(6);
+      expect(l).to.have.property('rows').and.be.equal(r);
+      expect(l).to.have.property('columns').and.be.equal(c);
       // no better comparison possible
       expect(l).to.have.property('content').and.containing(matrix.content[0]);
     });
-  });
-  describe('#update()', function () {
-    it('has a method #update()', function () {
-      expect(matrix).to.respondTo('update');
-    });
-    it('updates a matrix\'s weights'/*, function () {
-      matrix.delta_weights[0] = 1;
-      let old_weight = matrix.weights[0];
-      expect(matrix.update(0.1)).to.be.undefined;
-      expect(matrix.weights[0]).to.be.equal(old_weight - 0.1);
-    }*/);
-  });
-  describe('#weighted_sums()', function () {
-    it('has a method #weighted_sums()', function () {
-      expect(matrix).to.respondTo('weighted_sums');
-    });
-    it('returns a promise, that eventually resolves into a column vector'/*, function () {
-      return expect(matrix.weighted_sums()).to.be.instanceOf(Promise)
-        .and.eventually.be.instanceOf(Float64Array).and.be.ofSize(6);
-    }*/);
   });
 });
