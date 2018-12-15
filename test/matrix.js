@@ -120,55 +120,75 @@ describe('Matrix', function () {
         .to.be.eventually.equal(matrix.get(0,0) * 2);
     });
   });
-  /*describe('#save()', function () {
+  describe('#add()', function () {
+    it('has a method #add()', function () {
+      expect(matrix).to.respondTo('add');
+    });
+    it('returns a promise with a new Matrix as a result', function () {
+      return expect(matrix.add(new Matrix(5, 6)))
+        .to.be.eventually.instanceOf(Matrix);
+    });
+    it('rejects with an error if dimensions don\'t fit', function () {
+      return expect(matrix.add(new Matrix(6, 5)))
+        .to.be.rejectedWith(Error, 'dimensions don\'t fit');
+    });
+    it('adds two matrices together', function () {
+      let m2 = new Matrix(5, 6);
+      m2.randomize(0, 0.01);
+      let e = matrix.get(0,0) + m2.get(0,0);
+      return expect(matrix.add(m2)
+        .then(function (m3) { return m3.get(0,0) })).to.be.eventually.equal(e);
+    });
+  });
+  describe('#save()', function () {
     it('has a method #save()', function () {
       expect(matrix).to.respondTo('save');
     });
     it('returns a JSON representation of the current matrix', function () {
-      expect(matrix.save()).to.be.a('object').and.have.property('activations_count').and.be.equal(5);
-      expect(matrix.save()).to.have.property('inputs_count').and.be.equal(6);
-      expect(matrix.save()).to.have.property('weights').and.be.containingAllOf(layer.weights);
+      expect(matrix.save()).to.be.a('object').and.have.property('rows')
+        .and.be.equal(5);
+      expect(matrix.save()).to.have.property('columns').and.be.equal(6);
+      expect(matrix.save()).to.have.property('content')
+        .and.be.containingAllOf(matrix.content);
     });
   });
   describe('.load()', function () {
     it('has a method .load()', function () {
-      expect(Layer).itself.to.respondTo('load');
+      expect(Matrix).itself.to.respondTo('load');
     });
-    it('returns a Layer object', function () {
-      let l = Layer.load(matrix.save());
-      expect(l).to.be.instanceOf(Layer);
-      expect(l).to.have.property('activations_count').and.be.equal(5);
-      expect(l).to.have.property('inputs_count').and.be.equal(6);
+    it('returns a Matrix object', function () {
+      let l = Matrix.load(JSON.parse(JSON.stringify(matrix.save())));
+      expect(l).to.be.instanceOf(Matrix);
+      expect(l).to.have.property('rows').and.be.equal(5);
+      expect(l).to.have.property('columns').and.be.equal(6);
       // no better comparison possible
-      expect(l).to.have.property('weights')
-      expect(l.weights[0]).to.be.equal(matrix.weights[0]);
-    });
-  });
-  describe('#update()', function () {
-    it('has a method #update()', function () {
-      expect(matrix).to.respondTo('update');
-    });
-    it('updates a matrix\'s weights', function () {
-      matrix.delta_weights[0] = 1;
-      let old_weight = matrix.weights[0];
-      expect(matrix.update(0.1)).to.be.undefined;
-      expect(matrix.weights[0]).to.be.equal(old_weight - 0.1);
+      expect(l).to.have.property('content').and.containing(matrix.content[0]);
     });
   });
   describe('#copy()', function () {
     it('has a method #copy()', function () {
       expect(matrix).to.respondTo('copy');
     });
-    it('returns a new Layer, that is a copy if the current matrix', function () {
+    it('returns a new Matrix, that is a copy if the current matrix', function () {
       let l = matrix.copy();
       expect(l).to.not.be.equal(matrix);
-      expect(l).to.be.instanceOf(Layer);
-      expect(l).to.have.property('activations_count').and.be.equal(5);
-      expect(l).to.have.property('inputs_count').and.be.equal(6);
+      expect(l).to.be.instanceOf(Matrix);
+      expect(l).to.have.property('rows').and.be.equal(5);
+      expect(l).to.have.property('columns').and.be.equal(6);
       // no better comparison possible
-      expect(l).to.have.property('weights')
-      expect(l.weights[0]).to.be.equal(matrix.weights[0]);
+      expect(l).to.have.property('content').and.containing(matrix.content[0]);
     });
+  });
+  describe('#update()', function () {
+    it('has a method #update()', function () {
+      expect(matrix).to.respondTo('update');
+    });
+    it('updates a matrix\'s weights'/*, function () {
+      matrix.delta_weights[0] = 1;
+      let old_weight = matrix.weights[0];
+      expect(matrix.update(0.1)).to.be.undefined;
+      expect(matrix.weights[0]).to.be.equal(old_weight - 0.1);
+    }*/);
   });
   describe('#weighted_sums()', function () {
     it('has a method #weighted_sums()', function () {
@@ -177,6 +197,6 @@ describe('Matrix', function () {
     it('returns a promise, that eventually resolves into a column vector'/*, function () {
       return expect(matrix.weighted_sums()).to.be.instanceOf(Promise)
         .and.eventually.be.instanceOf(Float64Array).and.be.ofSize(6);
-    });
-  });*/
+    }*/);
+  });
 });
