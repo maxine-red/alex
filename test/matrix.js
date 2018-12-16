@@ -148,6 +148,22 @@ describe('Matrix', function () {
       expect(matrix.tanh.get(0, 0)).and.be.equal(Math.tanh(1));
     });
   });
+  describe('#sigmoid', function () {
+    it('has a method #sigmoid', function () {
+      expect(matrix).to.have.property('sigmoid');
+    });
+    it('applies the sigmoid function to all elements', function () {
+      expect(matrix.sigmoid.get(0, 0)).and.be.equal(1.0/(1+Math.exp(-1)));
+    });
+  });
+  describe('#relu', function () {
+    it('has a method #relu', function () {
+      expect(matrix).to.have.property('relu');
+    });
+    it('applies the relu function to all elements', function () {
+      expect(matrix.relu.get(0, 0)).and.be.equal(1);
+    });
+  });
   describe('#save()', function () {
     it('has a method #save()', function () {
       expect(matrix).to.respondTo('save');
