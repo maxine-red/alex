@@ -17,13 +17,11 @@
  *  along with Alex.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*let chai = require('chai');
+let chai = require('chai');
 let chai_array = require('chai-arrays');
-let chai_promises = require('chai-as-promised');
 const Layer = require('../../lib/network/layer');
 
 chai.use(chai_array);
-chai.use(chai_promises);
 let expect = chai.expect;
 
 let layer = new Layer(6, 5);
@@ -125,6 +123,6 @@ describe('Layer', function () {
     it('returns a promise, that eventually resolves into a column vector'/*, function () {
       return expect(layer.weighted_sums()).to.be.instanceOf(Promise)
         .and.eventually.be.instanceOf(Float64Array).and.be.ofSize(6);
-    }/);
+    }*/);
   });
-});*/
+});
