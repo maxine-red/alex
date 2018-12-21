@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maxine-red/al3xjs.git"
+    "url": "https://github.com/maxine-red/al3x.git"
   },
   "keywords": [
     "machine_learning",
@@ -28,15 +28,15 @@
     "node": ">= 8.0.0"
   },
   "dependencies": {
-    "config": "^3.0.0",
-    "random": "^2.0.12"
+    "config": "^3.0.1",
+    "random": "^2.0.13"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-arrays": "^2.0.0",
     "chai-as-promised": "^7.1.1",
     "documentation": "^8.1.2",
-    "eslint": "^5.9.0",
+    "eslint": "^5.10.0",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0"
   }
