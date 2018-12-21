@@ -25,7 +25,9 @@ chai.use(chai_array);
 let expect = chai.expect;
 let r = 9;
 let c = 12;
-let matrix = new Matrix(r, c);
+let matrix = new Matrix(r, c, true);
+let m2 = new Matrix(c, r);
+let m3;
 
 describe('Matrix', function () {
   describe('new', function () {
@@ -64,6 +66,7 @@ describe('Matrix', function () {
       expect(matrix).to.respondTo('get');
     });
     it('accepts two numbers and returns the number both indeces point to in matrix', function () {
+      matrix.content.fill(1);
       expect(matrix.get(3,4)).to.be.a('number')
         .and.be.equal(matrix.content[3 * matrix.columns + 4]);
     });
@@ -97,63 +100,12 @@ describe('Matrix', function () {
       expect(matrix.column(4)[3]).to.be.a('number').and.be.equal(5);
     });
   });
-  describe('#mul()', function () {
-    it('has a method #mul()', function () {
-      expect(matrix).to.respondTo('mul');
-    });
-    it('throws an error if dimensions don\'t fit', function () {
-      expect(function () { matrix.mul(new Matrix(r, c)) })
-        .to.be.throw(Error, 'dimensions misalinged');
-    });
-    it('multiplies two matrices together', function () {
-      let m2 = new Matrix(c, r);
-      let o = 0;
-      for (let i = 0; i < r; i++) {
-        for (let j = 0; j < c; j++) {
-          matrix.set(i, j, ++o);
-        }
-      }
-      o = 0;
-      for (let i = 0; i < c; i++) {
-        for (let j = 0; j < r; j++) {
-          m2.set(i, j, ++o);
-        }
-      }
-      expect(matrix.mul(m2).get(0,0)).to.be.equal(5226);
-    });
-    it('multiplies a matrix and a scalar together', function () {
-      matrix.content.fill(1);
-      expect(matrix.mul(2).get(0,0)).to.be.equal(2);
-    });
-  });
-  describe('#add()', function () {
-    it('has a method #add()', function () {
-      expect(matrix).to.respondTo('add');
-    });
-    it('throws an error if dimensions don\'t fit', function () {
-      expect(function () { matrix.add(new Matrix(c, r)) })
-        .to.throw(Error, 'dimensions don\'t fit');
-    });
-    it('adds two matrices together', function () {
-      let m2 = new Matrix(r, c);
-      m2.content.fill(1);
-      expect(matrix.add(m2).get(0,0)).to.be.equal(2);
-    });
-  });
   describe('#tanh', function () {
     it('has a method #tanh', function () {
       expect(matrix).to.have.property('tanh');
     });
     it('applies the tanh function to all elements', function () {
       expect(matrix.tanh.get(0, 0)).and.be.equal(Math.tanh(1));
-    });
-  });
-  describe('#sigmoid', function () {
-    it('has a method #sigmoid', function () {
-      expect(matrix).to.have.property('sigmoid');
-    });
-    it('applies the sigmoid function to all elements', function () {
-      expect(matrix.sigmoid.get(0, 0)).and.be.equal(1.0/(1+Math.exp(-1)));
     });
   });
   describe('#relu', function () {
