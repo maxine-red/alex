@@ -49,9 +49,6 @@ describe('Matrix', function () {
     it('has a \'deltas\' property, that is a Float64Array objec', function () {
       expect(matrix).to.have.property('deltas').and.be.instanceOf(Float64Array);
     });
-    it('has a \'backprop\' property, that is an array objec', function () {
-      expect(matrix).to.have.property('backprop').and.be.array();
-    });
   });
   describe('#randomize()', function () {
     it('has a method #randomize()', function () {
@@ -153,6 +150,17 @@ describe('Matrix', function () {
       expect(l).to.have.property('columns').and.be.equal(c);
       // no better comparison possible
       expect(l).to.have.property('content').and.containing(matrix.content[0]);
+    });
+  });
+  describe('#update()', function () {
+    it('has a method #update()', function () {
+      expect(matrix).to.respondTo('update');
+    });
+    it('updates matrix content with delta values', function () {
+      matrix.deltas.fill(1);
+      matrix.content.fill(1)
+      expect(function () {matrix.update(0.1)}).to.not.throw();
+      expect(matrix.get(0,0)).to.be.equal(0.9);
     });
   });
 });
