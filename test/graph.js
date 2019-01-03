@@ -29,9 +29,8 @@ let graph = new Graph(true);
 let graph2 = new Graph();
 let r = 9;
 let c = 12;
-let m1 = new Matrix(r, c, true);
+let m1 = new Matrix(r, c);
 let m2 = new Matrix(c, r);
-let m3;
 
 function test(o) {
   return Math.round(o * 10) / 10.0;
@@ -98,9 +97,62 @@ describe('Graph', function () {
       expect(graph.sigmoid(m1).get(0, 0)).and.be.equal(1.0/(1+Math.exp(-1)));
     });
   });
+  describe('#tanh()', function () {
+    it('has a method #tanh()', function () {
+      expect(graph).to.respondTo('tanh');
+    });
+    it('applies the tanh function to all elements', function () {
+      expect(graph.tanh(m1).get(0, 0)).and.be.equal(Math.tanh(1));
+    });
+  });
+  describe('#relu()', function () {
+    it('has a method #sigmoid()', function () {
+      expect(graph).to.respondTo('sigmoid');
+    });
+    it('applies the relu function to all elements', function () {
+      expect(graph.relu(m1).get(0, 0)).and.be.equal(1);
+    });
+  });
   describe('#backward()', function () {
     it('has a method #bacward()', function () {
       expect(graph).to.respondTo('backward');
+    });
+    it('runs add backward correctly', function () {
+      graph.backprop = [];
+      let m3 = graph.add(m1, new Matrix(r, c));
+      m3.deltas[0] = 1;
+      graph.backward();
+      expect(m1.deltas[0]).to.be.eql(1);
+    });
+    it('runs mul backward correctly', function () {
+      m1.deltas.fill(0);
+      let m3 = graph.mul(m1, m2);
+      m3.deltas[0] = 1;
+      graph.backward();
+      expect(m1.deltas[0]).to.be.eql(1);
+    });
+    it('runs sigmoid backward correctly', function () {
+      m1.deltas.fill(0);
+      let m2 = graph.sigmoid(m1);
+      m2.deltas[0] = 1;
+      graph.backward();
+      let o = 0.7310585786300049;
+      expect(m1.deltas[0]).to.be.eql(o * (1 - o) * 1);
+    });
+    it('runs tanh backward correctly', function () {
+      m1.deltas.fill(0);
+      let m2 = graph.tanh(m1);
+      m2.deltas[0] = 1;
+      graph.backward();
+      let o = Math.tanh(1);
+      expect(m1.deltas[0]).to.be.eql((1.0 - o * o) * 1);
+    });
+    it('runs relu backward correctly', function () {
+      m1.deltas.fill(0);
+      let m2 = graph.relu(m1);
+      m2.deltas[0] = 1;
+      graph.backward();
+      expect(m1.deltas[0]).to.be.eql(1);
     });
     it('runs all forward operations backward, without error', function () {
       let g = new Graph(true);

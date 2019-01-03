@@ -97,22 +97,6 @@ describe('Matrix', function () {
       expect(matrix.column(4)[3]).to.be.a('number').and.be.equal(5);
     });
   });
-  describe('#tanh', function () {
-    it('has a method #tanh', function () {
-      expect(matrix).to.have.property('tanh');
-    });
-    it('applies the tanh function to all elements', function () {
-      expect(matrix.tanh.get(0, 0)).and.be.equal(Math.tanh(1));
-    });
-  });
-  describe('#relu', function () {
-    it('has a method #relu', function () {
-      expect(matrix).to.have.property('relu');
-    });
-    it('applies the relu function to all elements', function () {
-      expect(matrix.relu.get(0, 0)).and.be.equal(1);
-    });
-  });
   describe('#save()', function () {
     it('has a method #save()', function () {
       expect(matrix).to.respondTo('save');
