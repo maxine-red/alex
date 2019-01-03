@@ -75,10 +75,6 @@ describe('Graph', function () {
       m3 = graph.mul(m1, m2);
       expect(graph.mul(m1, m2).get(0,0)).to.be.equal(5226);
     });
-    it('multiplies a matrix and a scalar together', function () {
-      m1.content.fill(1);
-      expect(graph.mul(m1, 2).get(0,0)).to.be.equal(2);
-    });
   });
   describe('#add()', function () {
     it('has a method #add()', function () {
@@ -144,7 +140,7 @@ describe('Graph', function () {
         }
         inputs.push([o, d]);
       }
-      for (let i = 0; i < 60000; i++) {
+      for (let i = 0; i < 100000; i++) {
         let g = new Graph(true);
         let r = random.int(3);
         let a1mat = g.sigmoid(g.add(g.mul(w1, inputs[r][1]), b1));
@@ -152,10 +148,10 @@ describe('Graph', function () {
         out.deltas[0] = out.get(0,0) - inputs[r][0];
         g.backward();
         // update weights/biases
-        w1.update(0.1);
-        b1.update(0.1);
-        w2.update(0.1);
-        b2.update(0.1);
+        w1.update(0.3);
+        b1.update(0.3);
+        w2.update(0.3);
+        b2.update(0.3);
       }
       for (let i = 0; i < inputs.length; i++) {
         let g = new Graph();
@@ -182,7 +178,7 @@ describe('Graph', function () {
         }
         inputs.push([o, d]);
       }
-      for (let i = 0; i < 60000; i++) {
+      for (let i = 0; i < 100000; i++) {
         let g = new Graph(true);
         let r = random.int(3);
         let a1mat = g.sigmoid(g.add(g.mul(w1, inputs[r][1]), b1));
@@ -190,10 +186,10 @@ describe('Graph', function () {
         out.deltas[0] = out.get(0,0) - inputs[r][0];
         g.backward();
         // update weights/biases
-        w1.update(0.1);
-        b1.update(0.1);
-        w2.update(0.1);
-        b2.update(0.1);
+        w1.update(0.3);
+        b1.update(0.3);
+        w2.update(0.3);
+        b2.update(0.3);
       }
       for (let i = 0; i < inputs.length; i++) {
         let g = new Graph();
@@ -204,9 +200,9 @@ describe('Graph', function () {
     });
     it('learns the XOR function', function () {
       this.timeout(0);
-      let w1 = new Matrix(3, 2); w1.randomize(0, 0.01);
-      let b1 = new Matrix(3, 1);
-      let w2 = new Matrix(1, 3); w2.randomize(0, 0.01);
+      let w1 = new Matrix(6, 2); w1.randomize(0, 0.01);
+      let b1 = new Matrix(6, 1);
+      let w2 = new Matrix(1, 6); w2.randomize(0, 0.01);
       let b2 = new Matrix(1, 1);
       let inputs = [];
       for (let i = 0; i < 4; i++) {
