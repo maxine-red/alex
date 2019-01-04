@@ -83,7 +83,7 @@ describe('Graph', function () {
       expect(function () { graph.add(m1, new Matrix(c, r)) })
         .to.throw(Error, 'dimensions don\'t fit');
     });
-    it('adds two matrices together', function () {
+    it('add two matrices together', function () {
       let m2 = new Matrix(r, c);
       m2.content.fill(1);
       expect(graph.add(m1, m2).get(0,0)).to.be.equal(2);
@@ -102,6 +102,7 @@ describe('Graph', function () {
       expect(graph).to.respondTo('tanh');
     });
     it('applies the tanh function to all elements', function () {
+      expect(graph2.tanh(m1).get(0, 0)).and.be.equal(Math.tanh(1));
       expect(graph.tanh(m1).get(0, 0)).and.be.equal(Math.tanh(1));
     });
   });
@@ -111,6 +112,7 @@ describe('Graph', function () {
     });
     it('applies the relu function to all elements', function () {
       expect(graph.relu(m1).get(0, 0)).and.be.equal(1);
+      expect(graph2.relu(m1).get(0, 0)).and.be.equal(1);
     });
   });
   describe('#backward()', function () {
@@ -149,9 +151,11 @@ describe('Graph', function () {
     });
     it('runs relu backward correctly', function () {
       m1.deltas.fill(0);
+      m1.content[2] = 0;
       let m2 = graph.relu(m1);
       m2.deltas[0] = 1;
       graph.backward();
+      m1.content[2] = 1;
       expect(m1.deltas[0]).to.be.eql(1);
     });
     it('runs all forward operations backward, without error', function () {
@@ -171,122 +175,6 @@ describe('Graph', function () {
       expect(b.deltas[0]).to.be.equal(-0.7);
       expect(w.deltas[0]).to.be.equal(-0.7);
       expect(w.deltas[1]).to.be.equal(-0.7);
-    });
-  });
-  describe('learning', function () {
-    it('learns the AND function', function () {
-      this.timeout(0);
-      let w1 = new Matrix(3, 2); w1.randomize(0, 0.01);
-      let b1 = new Matrix(3, 1);
-      let w2 = new Matrix(1, 3); w2.randomize(0, 0.01);
-      let b2 = new Matrix(1, 1);
-      let inputs = [];
-      for (let i = 0; i < 4; i++) {
-        let d = new Matrix(2,1);
-        let o = 0;
-        switch (i) {
-          case 0: break;
-          case 1: d.set(1, 0, 1); break;
-          case 2: d.set(0, 0, 1); break;
-          case 3: o = 1; d.set(1, 0, 1); d.set(0, 0, 1); break
-        }
-        inputs.push([o, d]);
-      }
-      for (let i = 0; i < 100000; i++) {
-        let g = new Graph(true);
-        let r = random.int(3);
-        let a1mat = g.sigmoid(g.add(g.mul(w1, inputs[r][1]), b1));
-        let out = g.sigmoid(g.add(g.mul(w2, a1mat), b2));
-        out.deltas[0] = out.get(0,0) - inputs[r][0];
-        g.backward();
-        // update weights/biases
-        w1.update(0.3);
-        b1.update(0.3);
-        w2.update(0.3);
-        b2.update(0.3);
-      }
-      for (let i = 0; i < inputs.length; i++) {
-        let g = new Graph();
-        let a1mat = g.sigmoid(g.add(g.mul(w1, inputs[i][1]), b1));
-        let out = g.sigmoid(g.add(g.mul(w2, a1mat), b2));
-        expect(test(out.get(0,0))).to.be.equal(inputs[i][0]);
-      }
-    });
-    it('learns the OR function', function () {
-      this.timeout(0);
-      let w1 = new Matrix(3, 2); w1.randomize(0, 0.01);
-      let b1 = new Matrix(3, 1);
-      let w2 = new Matrix(1, 3); w2.randomize(0, 0.01);
-      let b2 = new Matrix(1, 1);
-      let inputs = [];
-      for (let i = 0; i < 4; i++) {
-        let d = new Matrix(2,1);
-        let o = 0;
-        switch (i) {
-          case 0: break;
-          case 1: o = 1; d.set(1, 0, 1); break;
-          case 2: o = 1; d.set(0, 0, 1); break;
-          case 3: o = 1; d.set(1, 0, 1); d.set(0, 0, 1); break
-        }
-        inputs.push([o, d]);
-      }
-      for (let i = 0; i < 100000; i++) {
-        let g = new Graph(true);
-        let r = random.int(3);
-        let a1mat = g.sigmoid(g.add(g.mul(w1, inputs[r][1]), b1));
-        let out = g.sigmoid(g.add(g.mul(w2, a1mat), b2));
-        out.deltas[0] = out.get(0,0) - inputs[r][0];
-        g.backward();
-        // update weights/biases
-        w1.update(0.3);
-        b1.update(0.3);
-        w2.update(0.3);
-        b2.update(0.3);
-      }
-      for (let i = 0; i < inputs.length; i++) {
-        let g = new Graph();
-        let a1mat = g.sigmoid(g.add(g.mul(w1, inputs[i][1]), b1));
-        let out = g.sigmoid(g.add(g.mul(w2, a1mat), b2));
-        expect(test(out.get(0,0))).to.be.equal(inputs[i][0]);
-      }
-    });
-    it('learns the XOR function', function () {
-      this.timeout(0);
-      let w1 = new Matrix(6, 2); w1.randomize(0, 0.01);
-      let b1 = new Matrix(6, 1);
-      let w2 = new Matrix(1, 6); w2.randomize(0, 0.01);
-      let b2 = new Matrix(1, 1);
-      let inputs = [];
-      for (let i = 0; i < 4; i++) {
-        let d = new Matrix(2,1);
-        let o = 0;
-        switch (i) {
-          case 0: break;
-          case 1: o = 1; d.set(1, 0, 1); break;
-          case 2: o = 1; d.set(0, 0, 1); break;
-          case 3: d.set(1, 0, 1); d.set(0, 0, 1); break
-        }
-        inputs.push([o, d]);
-      }
-      for (let i = 0; i < 100000; i++) {
-        let g = new Graph(true);
-        let r = random.int(3);
-        let a1mat = g.sigmoid(g.add(g.mul(w1, inputs[r][1]), b1));
-        let out = g.sigmoid(g.add(g.mul(w2, a1mat), b2));
-        out.deltas[0] = out.get(0,0) - inputs[r][0];
-        g.backward();
-        // update weights/biases
-        w1.update(0.3);
-        b1.update(0.3);
-        w2.update(0.3);
-        b2.update(0.3);
-      }
-      for (let i = 0; i < inputs.length; i++) {
-        let g = new Graph();
-        let a1mat = g.sigmoid(g.add(g.mul(w1, inputs[i][1]), b1));
-        let out = g.sigmoid(g.add(g.mul(w2, a1mat), b2));
-        expect(test(out.get(0,0))).to.be.equal(inputs[i][0]);
-      }
     });
   });
 });
