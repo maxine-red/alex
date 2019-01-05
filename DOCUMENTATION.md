@@ -2,112 +2,371 @@
 
 ### Table of Contents
 
--   [Alex][1]
-    -   [remember][2]
-        -   [Parameters][3]
-    -   [forget_all][4]
-    -   [materialize_memory][5]
-    -   [learn][6]
-    -   [predict][7]
+-   [NeuralNetwork][1]
+    -   [Parameters][2]
+    -   [add][3]
+        -   [Parameters][4]
+    -   [run][5]
+        -   [Parameters][6]
+    -   [train][7]
         -   [Parameters][8]
-    -   [act][9]
-        -   [Parameters][10]
+-   [Matrix][9]
+    -   [Parameters][10]
+    -   [randomize][11]
+        -   [Parameters][12]
+    -   [get][13]
+        -   [Parameters][14]
+    -   [set][15]
+        -   [Parameters][16]
+    -   [save][17]
+    -   [update][18]
+        -   [Parameters][19]
+    -   [load][20]
+        -   [Parameters][21]
+-   [Graph][22]
+    -   [Parameters][23]
+    -   [backward][24]
+    -   [mul][25]
+        -   [Parameters][26]
+    -   [add][27]
+        -   [Parameters][28]
+    -   [sigmoid][29]
+        -   [Parameters][30]
+    -   [tanh][31]
+        -   [Parameters][32]
+    -   [relu][33]
+        -   [Parameters][34]
 
-## Alex
+## NeuralNetwork
 
-Main class to interact with Alex
+A class to handle neural networks.
+
+### Parameters
+
+-   `alpha` **[Number][35]** learning rate of this network (optional, default `0.1`)
 
 **Meta**
 
 -   **since**: 1.0.0
 -   **author**: Maxine Michalski
 
-### remember
+### add
 
-Remembers a state/action pair.
-Use this method to save state/action pairs, so later they can be used for
-learning.
-It is important to have a memory filled with pairs BEFORE starting to
-learn!
-This method also changes an internal variable and IS NOT thread safe.
+Adds an additional layer to this network. Only two layers are supported.
+Look at tests for examples of layer descriptions.
 
 #### Parameters
 
--   `state` **[Array][11]** A state of environement to remember
--   `action` **[Array][11]** The corresponding action, taken inside that
-    environment.
+-   `layer` **[Object][36]** Layer description for creation.
 
-Returns **Memory** the appended memory object
+Returns **[undefined][37]** 
 
-### forget_all
+**Meta**
 
-Empties the `memories` inernal variable and makes Alex forget everything.
-This literally removes all memories, permanently!
+-   **author**: Maxine Michalski
 
-Returns **[undefined][12]** 
+### run
 
-### materialize_memory
-
-Saves memories to disk, so they can be loaded back in later.
-This file is fixed and will be loaded on every call to Alex's constructor.
-It also saves the current state, so if you made her forget, she saves an
-empty array.
-
-Returns **`true`** when no error occured.
-
-### learn
-
-Learns from past memories.
-This method is the base for any learning and will run asynchronously.
-
-Returns **[Promise][13]** that will be resolved with a learning historu.
-
-### predict
-
-Takes in a(n array of) state(s) and returns a(n array of) prediction(s).
+Run (forward propagate) through a network.
 
 #### Parameters
 
--   `i_states` **[Array][11]** An array of states, to make predictions for.
+-   `inputs` **[Array][38]** Array that contains input values
 
-Returns **[Promise][13]** to be resolved with predictions for every state.
+Returns **[Matrix][39]** result of forward propagation
 
-### act
+**Meta**
 
-Acts in the environment.
+-   **author**: Maxine Michalski
+
+### train
+
+Trains a network on parameters.
+For an example of train parameters, look into tests
 
 #### Parameters
 
--   `states` **[Array][11]** Array of states, to be fed into `predict()`
--   `func` **[Function][14]** Function to be called with the result of
-    `predict()`
+-   `params` **[Object][36]** Object that describes train parameters and
+    contains train data
 
-Returns **[undefined][12]** 
+Returns **[undefined][37]** 
 
-[1]: #alex
+**Meta**
 
-[2]: #remember
+-   **author**: Maxine Michalski
 
-[3]: #parameters
+## Matrix
 
-[4]: #forget_all
+Matrix class
 
-[5]: #materialize_memory
+### Parameters
 
-[6]: #learn
+-   `rows` **[Number][35]** Number of rows, this matrix has
+-   `columns` **[Number][35]** Number of columns, this matrix has
 
-[7]: #predict
+**Meta**
 
-[8]: #parameters-1
+-   **since**: 1.0.0
+-   **author**: Maxine Michalski
 
-[9]: #act
+### randomize
 
-[10]: #parameters-2
+Randomize weights
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+#### Parameters
 
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+-   `mu` **[Number][35]** Center of gaussian curve
+-   `std` **[NUmber][35]** standard deviation
 
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+Returns **[Float64Array][40]** randomized array
 
-[14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### get
+
+Get a value out of this matrix
+
+#### Parameters
+
+-   `row` **[Number][35]** Row of matrix to fetch value from
+-   `col` **[Number][35]** Column of matrix to fetch value from
+
+Returns **[Number][35]** Value of specified cell
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### set
+
+set a value out of this matrix
+
+#### Parameters
+
+-   `row` **[Number][35]** Row of matrix to set value of
+-   `col` **[Number][35]** Column of matrix to set value of
+-   `val` **[Number][35]** Value to set cell
+
+Returns **[undefined][37]** 
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### save
+
+Saves matrix to a JSON representation
+
+Returns **[Object][36]** JSON representation of Matrix object
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### update
+
+Update matrix with delta values and considering a learning rate alpha
+
+#### Parameters
+
+-   `alpha` **[Number][35]** Learning rate to use
+
+Returns **[undefined][37]** 
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### load
+
+Loads a matrix from a JSON representation
+
+#### Parameters
+
+-   `json` **[Object][36]** JSON representation of a matrix
+
+Returns **[Matrix][39]** restored matrix
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+## Graph
+
+Graph class
+
+### Parameters
+
+-   `needs_backprop` **[Boolean][41]** An indicator if this graph needs
+    backpropagation or not (optional, default `false`)
+
+**Meta**
+
+-   **since**: 1.0.0
+-   **author**: Maxine Michalski
+
+### backward
+
+A method to backpropagate through a network
+
+Returns **[undefined][37]** 
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### mul
+
+Matrix multiplication
+
+#### Parameters
+
+-   `m1` **[Matrix][39]** First matrix to multiplicate
+-   `m2` **[Matrix][39]** Second matrix to multiplicate
+
+Returns **[Matrix][39]** product of the two matrices
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### add
+
+Adds two matrices together
+
+#### Parameters
+
+-   `m1` **[Matrix][39]** First matrix to add
+-   `m2` **[Matrix][39]** Second matrix to add
+
+Returns **[Matrix][39]** sum of the two matrices
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### sigmoid
+
+A method to apply the sigmoid (softstep) function on a matrix
+
+#### Parameters
+
+-   `m1` **[Matrix][39]** Matrix to apply sigmoid on
+
+Returns **[Matrix][39]** sigmoid applied matrix
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### tanh
+
+A method to apply the tanh function on a matrix
+
+#### Parameters
+
+-   `m1` **[Matrix][39]** Matrix to apply tanh on
+
+Returns **[Matrix][39]** tanh applied matrix
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+### relu
+
+A method to apply the relu function on a matrix
+
+#### Parameters
+
+-   `m1` **[Matrix][39]** Matrix to apply sigmoid on
+
+Returns **[Matrix][39]** relu applied matrix
+
+**Meta**
+
+-   **author**: Maxine Michalski
+
+[1]: #neuralnetwork
+
+[2]: #parameters
+
+[3]: #add
+
+[4]: #parameters-1
+
+[5]: #run
+
+[6]: #parameters-2
+
+[7]: #train
+
+[8]: #parameters-3
+
+[9]: #matrix
+
+[10]: #parameters-4
+
+[11]: #randomize
+
+[12]: #parameters-5
+
+[13]: #get
+
+[14]: #parameters-6
+
+[15]: #set
+
+[16]: #parameters-7
+
+[17]: #save
+
+[18]: #update
+
+[19]: #parameters-8
+
+[20]: #load
+
+[21]: #parameters-9
+
+[22]: #graph
+
+[23]: #parameters-10
+
+[24]: #backward
+
+[25]: #mul
+
+[26]: #parameters-11
+
+[27]: #add-1
+
+[28]: #parameters-12
+
+[29]: #sigmoid
+
+[30]: #parameters-13
+
+[31]: #tanh
+
+[32]: #parameters-14
+
+[33]: #relu
+
+[34]: #parameters-15
+
+[35]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[36]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[37]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+
+[38]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[39]: #matrix
+
+[40]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Float64Array
+
+[41]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean

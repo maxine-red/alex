@@ -21,7 +21,6 @@ let chai = require('chai');
 let chai_array = require('chai-arrays');
 const Graph = require('../lib/graph');
 const Matrix = require('../lib/matrix');
-const random = require('random');
 
 chai.use(chai_array);
 let expect = chai.expect;
@@ -31,10 +30,6 @@ let r = 9;
 let c = 12;
 let m1 = new Matrix(r, c);
 let m2 = new Matrix(c, r);
-
-function test(o) {
-  return Math.round(o * 10) / 10.0;
-}
 
 describe('Graph', function () {
   describe('new', function () {
@@ -55,7 +50,7 @@ describe('Graph', function () {
       expect(graph).to.respondTo('mul');
     });
     it('throws an error if dimensions don\'t fit', function () {
-      expect(function () { graph.mul(m1, new Matrix(r, c)) })
+      expect(function () { graph.mul(m1, new Matrix(r, c)); })
         .to.throw(Error, 'dimensions misalinged');
     });
     it('multiplies two matrices together', function () {
@@ -71,7 +66,6 @@ describe('Graph', function () {
           m2.set(i, j, ++o);
         }
       }
-      m3 = graph.mul(m1, m2);
       expect(graph.mul(m1, m2).get(0,0)).to.be.equal(5226);
     });
   });
@@ -80,7 +74,7 @@ describe('Graph', function () {
       expect(graph).to.respondTo('add');
     });
     it('throws an error if dimensions don\'t fit', function () {
-      expect(function () { graph.add(m1, new Matrix(c, r)) })
+      expect(function () { graph.add(m1, new Matrix(c, r)); })
         .to.throw(Error, 'dimensions don\'t fit');
     });
     it('add two matrices together', function () {
@@ -169,7 +163,7 @@ describe('Graph', function () {
       let a1mul = g.mul(w, input);
       let out = g.add(a1mul, b);
       out.deltas[0] = out.content - 1;
-      expect(function () { g.backward() }).to.not.throw();
+      expect(function () { g.backward(); }).to.not.throw();
       expect(out.deltas[0]).to.be.equal(-0.7);
       expect(a1mul.deltas[0]).to.be.equal(-0.7);
       expect(b.deltas[0]).to.be.equal(-0.7);

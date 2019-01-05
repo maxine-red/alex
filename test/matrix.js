@@ -26,8 +26,6 @@ let expect = chai.expect;
 let r = 9;
 let c = 12;
 let matrix = new Matrix(r, c, true);
-let m2 = new Matrix(c, r);
-let m3;
 
 describe('Matrix', function () {
   describe('new', function () {
@@ -77,26 +75,6 @@ describe('Matrix', function () {
       expect(matrix.get(3, 4)).to.be.a('number').and.be.equal(5);
     });
   });
-  describe('#row()', function () {
-    it('has a method #row()', function () {
-      expect(matrix).to.respondTo('row');
-    });
-    it('accepts a number and returns the corresponding row', function () {
-      expect(matrix.row(3)).to.be.instanceOf(Float64Array)
-        .and.be.ofSize(matrix.columns);
-      expect(matrix.row(3)[4]).to.be.a('number').and.be.equal(5);
-    });
-  });
-  describe('#column()', function () {
-    it('has a method #column()', function () {
-      expect(matrix).to.respondTo('column');
-    });
-    it('accepts a number and returns the corresponding column', function () {
-      expect(matrix.column(4)).to.be.instanceOf(Float64Array)
-        .and.be.ofSize(matrix.rows);
-      expect(matrix.column(4)[3]).to.be.a('number').and.be.equal(5);
-    });
-  });
   describe('#save()', function () {
     it('has a method #save()', function () {
       expect(matrix).to.respondTo('save');
@@ -122,28 +100,14 @@ describe('Matrix', function () {
       expect(l).to.have.property('content').and.containing(matrix.content[0]);
     });
   });
-  describe('#copy()', function () {
-    it('has a method #copy()', function () {
-      expect(matrix).to.respondTo('copy');
-    });
-    it('returns a new Matrix, that is a copy if the current matrix', function () {
-      let l = matrix.copy();
-      expect(l).to.not.be.equal(matrix);
-      expect(l).to.be.instanceOf(Matrix);
-      expect(l).to.have.property('rows').and.be.equal(r);
-      expect(l).to.have.property('columns').and.be.equal(c);
-      // no better comparison possible
-      expect(l).to.have.property('content').and.containing(matrix.content[0]);
-    });
-  });
   describe('#update()', function () {
     it('has a method #update()', function () {
       expect(matrix).to.respondTo('update');
     });
     it('updates matrix content with delta values', function () {
       matrix.deltas.fill(1);
-      matrix.content.fill(1)
-      expect(function () {matrix.update(0.1)}).to.not.throw();
+      matrix.content.fill(1);
+      expect(function () {matrix.update(0.1);}).to.not.throw();
       expect(matrix.get(0,0)).to.be.equal(0.9);
     });
   });

@@ -33,7 +33,7 @@ function test_learn(net, params) {
   net.train(params);
   for (let i = 0; i < 4; i++) {
     expect(Math.round(net.run(params.inputs[i]).get(0,0) * 10) / 10.0).to.be
-      .eql(params.outputs[i][0])
+      .eql(params.outputs[i][0]);
   }
 }
 
@@ -83,7 +83,7 @@ describe('Network', function () {
     });
     it('throws an error if important parameter are missing', function () {
       let params = {};
-      expect(function () { network.train(params) }).to.throw(Error);
+      expect(function () { network.train(params); }).to.throw(Error);
     });
     it('runs forward and back- propagation without error', function () {
       let params = {
@@ -91,7 +91,7 @@ describe('Network', function () {
         outputs: [[0], [1], [1], [1]],
         epochs: 1
       };
-      expect(function () { network.train(params) }).to.not.throw(Error);
+      expect(function () { network.train(params); }).to.not.throw(Error);
     });
     describe('learning', function () {
       it('learns the AND function', function () {
