@@ -45,15 +45,19 @@ describe('Graph', function () {
       expect(graph2).to.have.property('needs_backprop').and.be.false;
     });
   });
-  describe('#mul()', function () {
-    it('has a method #mul()', function () {
-      expect(graph).to.respondTo('mul');
+  describe('#weighted_sums()', function () {
+    it('has a method #weighted_sums()', function () {
+      expect(graph).to.respondTo('weighted_sums');
     });
     it('throws an error if dimensions don\'t fit', function () {
-      expect(function () { graph.mul(m1, new Matrix(r, c)); })
-        .to.throw(Error, 'dimensions misalinged');
+      expect(function () {
+        graph.weighted_sums(m1, m1, new Matrix(c, r));
+      }).to.throw(Error, 'dimensions misaligned');
+      expect(function () {
+        graph.weighted_sums(m1, new Matrix(c, r), m1);
+      }).to.throw(Error, 'dimensions don\'t fit');
     });
-    it('multiplies two matrices together', function () {
+    it('calculates the weighted sums', function () {
       let o = 0;
       for (let i = 0; i < r; i++) {
         for (let j = 0; j < c; j++) {
@@ -66,21 +70,9 @@ describe('Graph', function () {
           m2.set(i, j, ++o);
         }
       }
-      expect(graph.mul(m1, m2).get(0,0)).to.be.equal(5226);
-    });
-  });
-  describe('#add()', function () {
-    it('has a method #add()', function () {
-      expect(graph).to.respondTo('add');
-    });
-    it('throws an error if dimensions don\'t fit', function () {
-      expect(function () { graph.add(m1, new Matrix(c, r)); })
-        .to.throw(Error, 'dimensions don\'t fit');
-    });
-    it('add two matrices together', function () {
-      let m2 = new Matrix(r, c);
-      m2.content.fill(1);
-      expect(graph.add(m1, m2).get(0,0)).to.be.equal(2);
+      let m3 = new Matrix(r, r);
+      m3.content.fill(1);
+      expect(graph.weighted_sums(m1, m2, m3).get(0,0)).to.be.equal(5227);
     });
   });
   describe('#sigmoid()', function () {
@@ -113,16 +105,9 @@ describe('Graph', function () {
     it('has a method #bacward()', function () {
       expect(graph).to.respondTo('backward');
     });
-    it('runs add backward correctly', function () {
+    it('runs weighted_sums backward correctly', function () {
       graph.backprop = [];
-      let m3 = graph.add(m1, new Matrix(r, c));
-      m3.deltas[0] = 1;
-      graph.backward();
-      expect(m1.deltas[0]).to.be.eql(1);
-    });
-    it('runs mul backward correctly', function () {
-      m1.deltas.fill(0);
-      let m3 = graph.mul(m1, m2);
+      let m3 = graph.weighted_sums(m1, m2, new Matrix(r, r));
       m3.deltas[0] = 1;
       graph.backward();
       expect(m1.deltas[0]).to.be.eql(1);
@@ -160,12 +145,10 @@ describe('Graph', function () {
       b.content.fill(0.1);
       let input = new Matrix(2, 1);
       input.content.fill(1);
-      let a1mul = g.mul(w, input);
-      let out = g.add(a1mul, b);
+      let out = g.weighted_sums(w, input, b);
       out.deltas[0] = out.content - 1;
       expect(function () { g.backward(); }).to.not.throw();
       expect(out.deltas[0]).to.be.equal(-0.7);
-      expect(a1mul.deltas[0]).to.be.equal(-0.7);
       expect(b.deltas[0]).to.be.equal(-0.7);
       expect(w.deltas[0]).to.be.equal(-0.7);
       expect(w.deltas[1]).to.be.equal(-0.7);
