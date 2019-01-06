@@ -54,7 +54,7 @@ describe('Graph', function () {
         graph.weighted_sums(m1, m1, new Matrix(c, r));
       }).to.throw(Error, 'dimensions misaligned');
       expect(function () {
-        graph.weighted_sums(m1, new Matrix(c, r), m1);
+        graph.weighted_sums(m1, new Matrix(c, r), m1, new Matrix(r, r));
       }).to.throw(Error, 'dimensions don\'t fit');
     });
     it('calculates the weighted sums', function () {
@@ -72,7 +72,9 @@ describe('Graph', function () {
       }
       let m3 = new Matrix(r, r);
       m3.content.fill(1);
-      expect(graph.weighted_sums(m1, m2, m3).get(0,0)).to.be.equal(5227);
+      let m4 = new Matrix(r, r);
+      graph.weighted_sums(m1, m2, m3, m4);
+      expect(m4.get(0,0)).to.be.equal(5227);
     });
   });
   describe('#sigmoid()', function () {
@@ -80,7 +82,9 @@ describe('Graph', function () {
       expect(graph).to.respondTo('sigmoid');
     });
     it('applies the sigmoid function to all elements', function () {
-      expect(graph.sigmoid(m1).get(0, 0)).and.be.equal(1.0/(1+Math.exp(-1)));
+      graph.sigmoid(m1);
+      expect(m1.get(0, 0)).and.be.equal(1.0/(1+Math.exp(-1)));
+      m1.content.fill(1);
     });
   });
   describe('#tanh()', function () {
@@ -88,8 +92,12 @@ describe('Graph', function () {
       expect(graph).to.respondTo('tanh');
     });
     it('applies the tanh function to all elements', function () {
-      expect(graph2.tanh(m1).get(0, 0)).and.be.equal(Math.tanh(1));
-      expect(graph.tanh(m1).get(0, 0)).and.be.equal(Math.tanh(1));
+      graph2.tanh(m1);
+      expect(m1.get(0, 0)).and.be.equal(Math.tanh(1));
+      m1.content.fill(1);
+      graph.tanh(m1);
+      expect(m1.get(0, 0)).and.be.equal(Math.tanh(1));
+      m1.content.fill(1);
     });
   });
   describe('#relu()', function () {
@@ -97,8 +105,12 @@ describe('Graph', function () {
       expect(graph).to.respondTo('sigmoid');
     });
     it('applies the relu function to all elements', function () {
-      expect(graph.relu(m1).get(0, 0)).and.be.equal(1);
-      expect(graph2.relu(m1).get(0, 0)).and.be.equal(1);
+      graph2.relu(m1);
+      expect(m1.get(0, 0)).and.be.equal(1);
+      m1.content.fill(1);
+      graph.relu(m1);
+      expect(m1.get(0, 0)).and.be.equal(1);
+      m1.content.fill(1);
     });
   });
   describe('#backward()', function () {
@@ -107,32 +119,35 @@ describe('Graph', function () {
     });
     it('runs weighted_sums backward correctly', function () {
       graph.backprop = [];
-      let m3 = graph.weighted_sums(m1, m2, new Matrix(r, r));
-      m3.deltas[0] = 1;
+      let m4 = new Matrix(r, r);
+      graph.weighted_sums(m1, m2, new Matrix(r, r), m4);
+      m4.deltas[0] = 1;
       graph.backward();
       expect(m1.deltas[0]).to.be.eql(1);
     });
     it('runs sigmoid backward correctly', function () {
       m1.deltas.fill(0);
-      let m2 = graph.sigmoid(m1);
-      m2.deltas[0] = 1;
+      graph.sigmoid(m1);
+      m1.deltas[0] = 1;
       graph.backward();
       let o = 0.7310585786300049;
       expect(m1.deltas[0]).to.be.eql(o * (1 - o) * 1);
+      m1.content.fill(1);
     });
     it('runs tanh backward correctly', function () {
       m1.deltas.fill(0);
-      let m2 = graph.tanh(m1);
-      m2.deltas[0] = 1;
+      graph.tanh(m1);
+      m1.deltas[0] = 1;
       graph.backward();
       let o = Math.tanh(1);
       expect(m1.deltas[0]).to.be.eql((1.0 - o * o) * 1);
+      m1.content.fill(1);
     });
     it('runs relu backward correctly', function () {
       m1.deltas.fill(0);
       m1.content[2] = 0;
-      let m2 = graph.relu(m1);
-      m2.deltas[0] = 1;
+      graph.relu(m1);
+      m1.deltas[0] = 1;
       graph.backward();
       m1.content[2] = 1;
       expect(m1.deltas[0]).to.be.eql(1);
@@ -145,7 +160,8 @@ describe('Graph', function () {
       b.content.fill(0.1);
       let input = new Matrix(2, 1);
       input.content.fill(1);
-      let out = g.weighted_sums(w, input, b);
+      let out = new Matrix(1, 1);
+      g.weighted_sums(w, input, b, out);
       out.deltas[0] = out.content - 1;
       expect(function () { g.backward(); }).to.not.throw();
       expect(out.deltas[0]).to.be.equal(-0.7);

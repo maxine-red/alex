@@ -6,7 +6,8 @@
   "scripts": {
     "test": "export NODE_ENV=test; nyc --reporter=text-summary --reporter=lcov mocha --recursive",
     "lint": "eslint .",
-    "document": "documentation build lib/network.js -f md > DOCUMENTATION.md"
+    "document": "documentation build lib/network.js -f md > DOCUMENTATION.md",
+    "benchmark": "node benchmark/network.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "random": "^2.0.13"
   },
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "chai": "^4.2.0",
     "chai-arrays": "^2.0.0",
     "chai-as-promised": "^7.1.1",
