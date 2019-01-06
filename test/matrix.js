@@ -52,8 +52,9 @@ describe('Matrix', function () {
     it('has a method #randomize()', function () {
       expect(matrix).to.respondTo('randomize');
     });
-    it('accepts two numbers and returns a randomly filled Float64Array', function () {
-      expect(matrix.randomize(0, 0.01)).to.be.instanceOf(Float64Array);
+    it('accepts two numbers and randomizes content', function () {
+      matrix.randomize(0, 0.01);
+      expect(matrix.get(0,0)).to.not.be.eql(0);
     });
   });
   describe('#get()', function () {
